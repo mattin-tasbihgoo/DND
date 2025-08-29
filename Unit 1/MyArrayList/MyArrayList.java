@@ -27,11 +27,10 @@ public class MyArrayList<E> {
 	}
 
 	/* Return the number of active slots in the array list */
-	/*
-	 * public int size() {
-	 * 
-	 * }
-	 */
+
+	public int size() {
+		return internalArray.length;
+	}
 
 	/* Are there zero objects in the array list? */
 	/*
@@ -41,34 +40,39 @@ public class MyArrayList<E> {
 	 */
 
 	/* Get the index-th object in the list. */
-	/*
-	 * public E get(int index) {
-	 * 
-	 * }
-	 */
+
+	public E get(int index) {
+		return internalArray[index];
+	}
 
 	/* Replace the object at index with obj. returns object that was replaced. */
-	/*
-	 * public E set(int index, E obj) {
-	 * 
-	 * }
-	 */
+
+	public E set(int index, E obj) {
+		E temp = internalArray[index];
+		internalArray[index] = obj;
+		return temp;
+	}
 
 	/*
 	 * Returns true if this list contains an element equal to obj;
 	 * otherwise returns false.
 	 */
-	/*
-	 * public boolean contains(E obj) {
-	 * 
-	 * }
-	 */
+
+	public boolean contains(E obj) {
+		for (int i = 0; i < internalArray.length; i++) {
+			if (internalArray[i].equals(obj))
+				;
+		}
+		return false;
+	}
 
 	/* Insert an object at index */
 	// @SuppressWarnings("unchecked")
-	public void add(int index, E obj) {
-		/* ---- YOUR CODE HERE ---- */
-	}
+	/*
+	 * public void add(int index, E obj) {
+	 * 
+	 * }
+	 */
 
 	/* Add an object to the end of the list; returns true */
 	/*

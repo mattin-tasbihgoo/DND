@@ -2,16 +2,15 @@ public class Dog {
 
 	private String name;
 	private String breed;
-	
+
 	public Dog(String name, String breed) {
 		this.name = name;
 		this.breed = breed;
 	}
-	
+
 	public Dog(String name) {
-		this(name, "Pug");
+		this(name, "Golden");
 	}
-	
 
 	public String getName() {
 		return name;
@@ -30,7 +29,7 @@ public class Dog {
 	}
 
 	public boolean equals(Dog other) {
-		return this.name.equals(other.getName()) 
+		return this.name.equals(other.getName())
 				&& this.breed.equals(other.getBreed());
 	}
 
@@ -39,8 +38,4 @@ public class Dog {
 		return "Dog [name=" + name + ", breed=" + breed + "]";
 	}
 
-
-	
-	
-	
 }
