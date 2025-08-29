@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
-// import java.util.Objects;
 
 public class PugSaver {
 
@@ -9,7 +7,9 @@ public class PugSaver {
 		for (int i = 0; i < list.size(); i++) {
 			if (!list.get(i).toString().contains("Golden")) {
 				if (counter != i) {
-					Collections.swap(list, counter, i);
+					Dog tmpDog = list.get(counter);
+					list.set(counter, list.get(i));
+					list.set(i, tmpDog);
 				}
 				counter++;
 			}
