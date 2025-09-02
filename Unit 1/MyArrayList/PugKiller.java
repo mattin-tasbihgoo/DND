@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class PugKiller {
     public static void main(String[] args) {
         Dog dog1 = new Dog("mattin", "Golden");
@@ -8,7 +5,13 @@ public class PugKiller {
         Dog dog3 = new Dog("dylan", "");
         Dog dog4 = new Dog("felicia", "husky");
         Dog dog5 = new Dog("morgan", "Golden");
-        ArrayList<Dog> test1 = new ArrayList<Dog>(Arrays.asList(dog1, dog2, dog3, dog4, dog5));
+        @SuppressWarnings("Convert2Diamond")
+        MyArrayList<Dog> test1 = new MyArrayList<Dog>();
+        test1.add(0, dog1);
+        test1.add(1, dog2);
+        test1.add(2, dog3);
+        test1.add(3, dog4);
+        test1.add(4, dog5);
 
         System.out.println("Test 1");
         PugSaver.rescuePugs(test1);
@@ -16,7 +19,13 @@ public class PugKiller {
             System.out.println(test1.get(i).toString());
         }
 
-        ArrayList<Dog> test2 = new ArrayList<Dog>(Arrays.asList(dog1, dog5, dog3, dog4, dog2));
+        @SuppressWarnings("Convert2Diamond")
+        MyArrayList<Dog> test2 = new MyArrayList<Dog>();
+        test2.add(0, dog4);
+        test2.add(1, dog1);
+        test2.add(2, dog3);
+        test2.add(3, dog2);
+        test2.add(4, dog5);
 
         System.out.println("Test 2");
         PugSaver.rescuePugs(test2);
@@ -24,7 +33,13 @@ public class PugKiller {
             System.out.println(test2.get(i).toString());
         }
 
-        ArrayList<Dog> test3 = new ArrayList<Dog>(Arrays.asList(dog2, dog4, dog3, dog5, dog1));
+        @SuppressWarnings("Convert2Diamond")
+        MyArrayList<Dog> test3 = new MyArrayList<Dog>();
+        test3.add(0, dog2);
+        test3.add(1, dog3);
+        test3.add(2, dog1);
+        test3.add(3, dog4);
+        test3.add(4, dog5);
 
         System.out.println("Test 3");
         PugSaver.rescuePugs(test3);
