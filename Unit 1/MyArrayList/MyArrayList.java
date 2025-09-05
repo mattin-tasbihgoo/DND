@@ -24,23 +24,31 @@ public class MyArrayList<E> {
     }
 
     public boolean isEmpty() {
-        String string = "";
-        for (E internalArray1 : internalArray) {
-            string += internalArray1;
-        }
-        /* 
-        if (string.equals("")) {
-            return true;
-        }
-        return false; */
-        return string.equals("");
+        /*
+         * String string = "";
+         * for (E internalArray1 : internalArray) {
+         * string += internalArray1;
+         * }
+         */
+        if (objectCount == 0)
+            ;
+        return false;
+        /*
+         * if (string.equals("")) {
+         * return true;
+         * }
+         * return false;
+         */
+        // return string.equals("");
     }
 
     public E get(int index) {
+        checkIndex(index);
         return internalArray[index];
     }
 
     public E set(int index, E obj) {
+        checkIndex(index);
         E temp = internalArray[index];
         internalArray[index] = obj;
         return temp;
@@ -55,6 +63,7 @@ public class MyArrayList<E> {
     }
 
     public void add(int index, E obj) {
+        checkIndex(index);
         internalArray[index] = obj;
         if (index >= objectCount) {
             objectCount = index + 1;
@@ -63,18 +72,15 @@ public class MyArrayList<E> {
 
     // @SuppressWarnings("unchecked")
     public boolean add(E obj) {
-        objectCount++;
         internalArray[objectCount] = obj;
+        objectCount++;
         return true;
     }
 
     /* Remove the object at index and shift. Returns removed object. */
 
     public E remove(int index) {
-
-        if (index < 0 || index > internalArray.length) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
 
         E r = internalArray[index];
 
@@ -119,13 +125,6 @@ public class MyArrayList<E> {
          * return false;
          */
     }
-    
-    public int indexOf(E obj) {
-        for (int i = 0; i < objectCount; i++) {
-            if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i]));
-        }
-        return -1;
-    }
 
     @Override
     public String toString() {
@@ -134,6 +133,20 @@ public class MyArrayList<E> {
             string += internalArray1;
         }
         return string;
+    }
+
+    private int indexOf(E obj) {
+        for (int i = 0; i < objectCount; i++) {
+            if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i]))
+                ;
+        }
+        return -1;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= objectCount) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
 }
