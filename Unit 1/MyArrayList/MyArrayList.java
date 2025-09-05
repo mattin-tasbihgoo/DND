@@ -28,10 +28,12 @@ public class MyArrayList<E> {
         for (E internalArray1 : internalArray) {
             string += internalArray1;
         }
+        /* 
         if (string.equals("")) {
             return true;
         }
-        return false;
+        return false; */
+        return string.equals("");
     }
 
     public E get(int index) {
@@ -116,6 +118,13 @@ public class MyArrayList<E> {
          * 
          * return false;
          */
+    }
+    
+    public int indexOf(E obj) {
+        for (int i = 0; i < objectCount; i++) {
+            if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i]));
+        }
+        return -1;
     }
 
     @Override
