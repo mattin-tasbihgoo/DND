@@ -100,8 +100,9 @@ public class MyArrayList<E> {
 
     private int indexOf(E obj) {
         for (int i = 0; i < objectCount; i++) {
-            if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i]))
-                ;
+            if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i])) {
+                return i;
+            }
         }
         return -1;
     }
