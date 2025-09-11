@@ -16,7 +16,7 @@ public class PugKiller {
         test1.add(4, dog5);
 
         long time = System.nanoTime();
-        for (double i = 0; i < 200000000000.0; i++) {
+        for (int i = 0; i < 200000000; i++) {
             test1.add(new Dog("mattin", "Golden"));
             test1.add(new Dog("david", "Pug"));
             test1.add(new Dog("dylan", ""));
