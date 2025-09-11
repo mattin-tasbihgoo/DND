@@ -15,7 +15,8 @@ public class PugKiller {
         test1.add(3, dog4);
         test1.add(4, dog5);
 
-        for (int i = 0; i < 20000; i++) {
+        long time = System.nanoTime();
+        for (double i = 0; i < 200000000000.0; i++) {
             test1.add(new Dog("mattin", "Golden"));
             test1.add(new Dog("david", "Pug"));
             test1.add(new Dog("dylan", ""));
@@ -23,13 +24,15 @@ public class PugKiller {
             test1.add(new Dog("morgan", "Golden"));
         }
 
-        System.out.println("Test 1");
-        PugSaver.rescuePugs(test1);
-        for (int i = 0; i < test1.size(); i++) {
-            System.out.println(test1.get(i).toString());
-        }
+        long time2 = System.nanoTime();
 
-        @SuppressWarnings("Convert2Diamond")
+        System.out.printf("Build test1 (size %,d) took %.3f ms%n", test1.size(), (time2 - time) / 1_000_000.0);
+        long time3 = System.nanoTime();
+        PugSaver.rescuePugs(test1);
+        long time4 = System.nanoTime();
+        System.out.printf("Test 1: rescuePugs() took %.3f ms%n", (time4 - time3) / 1_000_000.0);
+
+        /* @SuppressWarnings("Convert2Diamond")
         MyArrayList<Dog> test2 = new MyArrayList<Dog>();
         test2.add(0, dog4);
         test2.add(1, dog1);
@@ -125,6 +128,6 @@ public class PugKiller {
             System.out.println("[PASS] " + label);
         } else {
             System.out.println("[FAIL] " + label + " -> expected false");
-        }
+        } */
     }
 }

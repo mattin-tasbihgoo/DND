@@ -8,30 +8,36 @@ public class MyArrayList<E> {
     protected E[] internalArray;
 
     @SuppressWarnings("unchecked")
+    // Big O: 1
     public MyArrayList() {
         this.internalArray = (E[]) new Object[5];
         this.objectCount = 0;
     }
 
     @SuppressWarnings("unchecked")
+    // Big O: 
     public MyArrayList(int initialCapacity) {
         this.internalArray = (E[]) new Object[initialCapacity];
         this.objectCount = 0;
     }
 
+    // Big O: 
     public int size() {
         return objectCount;
     }
 
+    // Big O: 
     public boolean isEmpty() {
         return objectCount == 0;
     }
 
+    // Big O: 
     public E get(int index) {
         checkIndex(index);
         return internalArray[index];
     }
 
+    // Big O: 
     public E set(int index, E obj) {
         checkIndex(index);
         E temp = internalArray[index];
@@ -39,10 +45,12 @@ public class MyArrayList<E> {
         return temp;
     }
 
+    // Big O: n
     public boolean contains(E obj) {
         return indexOf(obj) != -1;
     }
 
+    // Big O: n
     public void add(int index, E obj) {
         if (index < 0 || index > objectCount) {
             throw new IndexOutOfBoundsException();
@@ -57,15 +65,16 @@ public class MyArrayList<E> {
     }
 
     // @SuppressWarnings("unchecked")
+    // Big O: n
     public boolean add(E obj) {
         capCheck(objectCount + 1);
         internalArray[objectCount++] = obj;
         return true;
     }
 
+    // Big O: n
     public E remove(int index) {
         checkIndex(index);
-
         E r = internalArray[index];
         int num = objectCount - index - 1;
         if (num > 0) {
@@ -75,6 +84,7 @@ public class MyArrayList<E> {
         return r;
     }
 
+    // Big O: n
     public boolean remove(E obj) {
         int i = indexOf(obj);
         if (i >= 0) {
@@ -84,6 +94,7 @@ public class MyArrayList<E> {
         return false;
     }
 
+    // Big O: n
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -98,6 +109,7 @@ public class MyArrayList<E> {
         return sb.toString();
     }
 
+    // Big O: n
     private int indexOf(E obj) {
         for (int i = 0; i < objectCount; i++) {
             if (obj == null ? internalArray[i] == null : obj.equals(internalArray[i])) {
@@ -107,17 +119,22 @@ public class MyArrayList<E> {
         return -1;
     }
 
+    
     private void checkIndex(int index) {
         if (index < 0 || index >= objectCount) {
             throw new IndexOutOfBoundsException();
         }
     }
 
+    // Big O: 1
+    // Big O: n if resized
     private void capCheck(int min) {
-        if (internalArray.length < min) {
-            int cap = Math.max(internalArray.length, min);
-            internalArray = Arrays.copyOf(internalArray, cap);
+        if (internalArray.length >= min) {
+            return;
         }
+
+        int cap = internalArray.length * 2;
+        internalArray = Arrays.copyOf(internalArray, cap);
     }
 
 }
