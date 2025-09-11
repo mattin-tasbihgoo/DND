@@ -1,3 +1,4 @@
+
 import java.util.Arrays;
 
 public class MyArrayList<E> {
@@ -39,15 +40,13 @@ public class MyArrayList<E> {
     }
 
     public boolean contains(E obj) {
-        for (E internalArray1 : internalArray) {
-            if (internalArray1.equals(obj))
-                ;
-        }
-        return false;
+        return indexOf(obj) != -1;
     }
 
     public void add(int index, E obj) {
-        checkIndex(index);
+        if (index < 0 || index > objectCount) {
+            throw new IndexOutOfBoundsException();
+        }
         capCheck(objectCount + 1);
         internalArray[index] = obj;
         int num = objectCount - index;
@@ -61,7 +60,7 @@ public class MyArrayList<E> {
     // @SuppressWarnings("unchecked")
     public boolean add(E obj) {
         capCheck(objectCount + 1);
-        internalArray[objectCount++ ] = obj;
+        internalArray[objectCount++] = obj;
         return true;
     }
 
@@ -91,8 +90,10 @@ public class MyArrayList<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < objectCount; i++) {
-            if (i > 0) sb.append(", ");
-            sb.append(internalArray[i].toString());
+            if (i > 0) {
+                sb.append(", ");
+            }
+            sb.append(String.valueOf(internalArray[i]));
         }
         sb.append("]");
         return sb.toString();
@@ -108,7 +109,7 @@ public class MyArrayList<E> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index > objectCount) {
+        if (index < 0 || index >= objectCount) {
             throw new IndexOutOfBoundsException();
         }
     }

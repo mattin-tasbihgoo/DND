@@ -1,4 +1,6 @@
+
 public class PugKiller {
+
     public static void main(String[] args) {
         Dog dog1 = new Dog("mattin", "Golden");
         Dog dog2 = new Dog("david", "Pug");
@@ -12,6 +14,14 @@ public class PugKiller {
         test1.add(2, dog3);
         test1.add(3, dog4);
         test1.add(4, dog5);
+
+        for (int i = 0; i < 20000; i++) {
+            test1.add(new Dog("mattin", "Golden"));
+            test1.add(new Dog("david", "Pug"));
+            test1.add(new Dog("dylan", ""));
+            test1.add(new Dog("felicia", "husky"));
+            test1.add(new Dog("morgan", "Golden"));
+        }
 
         System.out.println("Test 1");
         PugSaver.rescuePugs(test1);
@@ -45,6 +55,76 @@ public class PugKiller {
         PugSaver.rescuePugs(test3);
         for (int i = 0; i < test3.size(); i++) {
             System.out.println(test3.get(i).toString());
+        }
+
+        System.out.println("Other tests");
+
+        testAddIndexOnEmpty();
+        testAddIndexShift();
+        testAppendGrowth();
+        testToStringAndNull();
+        testIsEmpty();
+
+    }
+
+    private static void testAddIndexOnEmpty() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add(0, "A");
+        assertEquals("after add(0,'A')", "[A]", list.toString());
+    }
+
+    private static void testAddIndexShift() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("A");
+        list.add("C");
+        list.add(1, "B");
+        assertEquals("insert middle", "[A, B, C]", list.toString());
+    }
+
+    private static void testAppendGrowth() {
+        MyArrayList<Integer> list = new MyArrayList<>(1);
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+        }
+        assertEquals("size==10", 10, list.size());
+        assertEquals("last==9", 9, list.get(9));
+    }
+
+    private static void testToStringAndNull() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add(null);
+        list.add("X");
+        assertEquals("toString with null", "[null, X]", list.toString());
+    }
+
+    private static void testIsEmpty() {
+        MyArrayList<String> list = new MyArrayList<>();
+        assertTrue("empty list isEmpty()", list.isEmpty());
+        list.add("A");
+        assertFalse("non-empty isEmpty()", list.isEmpty());
+    }
+
+    private static void assertEquals(String label, Object exp, Object act) {
+        if ((exp == null && act == null) || (exp != null && exp.equals(act))) {
+            System.out.println("[PASS] " + label + " -> " + exp);
+        } else {
+            System.out.println("[FAIL] " + label + " -> expected: " + exp + ", actual: " + act);
+        }
+    }
+
+    private static void assertTrue(String label, boolean cond) {
+        if (cond) {
+            System.out.println("[PASS] " + label);
+        } else {
+            System.out.println("[FAIL] " + label + " -> expected true");
+        }
+    }
+
+    private static void assertFalse(String label, boolean cond) {
+        if (!cond) {
+            System.out.println("[PASS] " + label);
+        } else {
+            System.out.println("[FAIL] " + label + " -> expected false");
         }
     }
 }
