@@ -23,9 +23,7 @@ public class MyArrayList<E> {
     }
 
     public boolean isEmpty() {
-        if (objectCount == 0)
-            ;
-        return false;
+        return objectCount == 0;
     }
 
     public E get(int index) {
@@ -50,17 +48,20 @@ public class MyArrayList<E> {
 
     public void add(int index, E obj) {
         checkIndex(index);
-        doubleArray();
+        capCheck(objectCount + 1);
         internalArray[index] = obj;
-        if (index >= objectCount) {
-            objectCount = index + 1;
+        int num = objectCount - index;
+        if (num > 0) {
+            System.arraycopy(internalArray, index, internalArray, index + 1, num);
         }
+        internalArray[index] = obj;
+        objectCount++;
     }
 
     // @SuppressWarnings("unchecked")
     public boolean add(E obj) {
-        internalArray[objectCount] = obj;
-        objectCount++;
+        capCheck(objectCount + 1);
+        internalArray[objectCount++ ] = obj;
         return true;
     }
 
@@ -90,7 +91,7 @@ public class MyArrayList<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < objectCount; i++) {
-            sb.append(", ");
+            if (i > 0) sb.append(", ");
             sb.append(internalArray[i].toString());
         }
         sb.append("]");
@@ -106,15 +107,15 @@ public class MyArrayList<E> {
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index >= objectCount) {
+        if (index < 0 || index > objectCount) {
             throw new IndexOutOfBoundsException();
         }
     }
 
-    private void doubleArray() {
-        if (objectCount == internalArray.length) {
-            objectCount = objectCount * 2;
-            internalArray = Arrays.copyOf(internalArray, objectCount);
+    private void capCheck(int min) {
+        if (internalArray.length < min) {
+            int cap = Math.max(internalArray.length, min);
+            internalArray = Arrays.copyOf(internalArray, cap);
         }
     }
 
