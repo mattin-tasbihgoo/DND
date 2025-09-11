@@ -48,7 +48,6 @@ public class MyArrayList<E> {
             throw new IndexOutOfBoundsException();
         }
         capCheck(objectCount + 1);
-        internalArray[index] = obj;
         int num = objectCount - index;
         if (num > 0) {
             System.arraycopy(internalArray, index, internalArray, index + 1, num);
