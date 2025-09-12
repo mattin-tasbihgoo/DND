@@ -2,26 +2,12 @@
 public class PugKiller {
 
     public static void main(String[] args) {
-        Dog dog1 = new Dog("mattin", "Golden");
-        Dog dog2 = new Dog("david", "Pug");
-        Dog dog3 = new Dog("dylan", "");
-        Dog dog4 = new Dog("felicia", "husky");
-        Dog dog5 = new Dog("morgan", "Golden");
         @SuppressWarnings("Convert2Diamond")
         MyArrayList<Dog> test1 = new MyArrayList<Dog>();
-        test1.add(0, dog1);
-        test1.add(1, dog2);
-        test1.add(2, dog3);
-        test1.add(3, dog4);
-        test1.add(4, dog5);
-
         long time = System.nanoTime();
-        for (int i = 0; i < 200000000; i++) {
+        for (int i = 0; i < 838860000 / 2; i++) {
             test1.add(new Dog("mattin", "Golden"));
             test1.add(new Dog("david", "Pug"));
-            test1.add(new Dog("dylan", ""));
-            test1.add(new Dog("felicia", "husky"));
-            test1.add(new Dog("morgan", "Golden"));
         }
 
         long time2 = System.nanoTime();

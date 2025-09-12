@@ -10,34 +10,35 @@ public class MyArrayList<E> {
     @SuppressWarnings("unchecked")
     // Big O: 1
     public MyArrayList() {
-        this.internalArray = (E[]) new Object[5];
+        this.internalArray = (E[]) new Object[100];
         this.objectCount = 0;
     }
 
     @SuppressWarnings("unchecked")
-    // Big O: 
+    // Big O: 1
     public MyArrayList(int initialCapacity) {
+        if (initialCapacity < 0) throw new IllegalArgumentException();
         this.internalArray = (E[]) new Object[initialCapacity];
         this.objectCount = 0;
     }
 
-    // Big O: 
+    // Big O: 1
     public int size() {
         return objectCount;
     }
 
-    // Big O: 
+    // Big O: 1
     public boolean isEmpty() {
         return objectCount == 0;
     }
 
-    // Big O: 
+    // Big O: 1
     public E get(int index) {
         checkIndex(index);
         return internalArray[index];
     }
 
-    // Big O: 
+    // Big O: 1
     public E set(int index, E obj) {
         checkIndex(index);
         E temp = internalArray[index];
