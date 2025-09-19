@@ -1,5 +1,6 @@
 // Implements a singly-linked list.
 
+// import java.util.List;
 
 public class SinglyLinkedList<E> {
 	private ListNode<E> head;
@@ -8,17 +9,24 @@ public class SinglyLinkedList<E> {
 
 	// Constructor: creates an empty list
 	public SinglyLinkedList() {
+		this.head = null;
+		this.tail = null;
+		this.nodeCount = 0;
 	}
 
 	// Constructor: creates a list that contains
 	// all elements from the array values, in the same order
+	@SuppressWarnings("unchecked")
 	public SinglyLinkedList(Object[] values) {
+		for (int i = 0; i < values.length; i++) {
+			add((E) values[i]);
+		}
 	}
-	
+
 	public ListNode<E> getHead() {
 		return head;
 	}
-	
+
 	public ListNode<E> getTail() {
 		return tail;
 	}
@@ -41,18 +49,29 @@ public class SinglyLinkedList<E> {
 	public int indexOf(E obj) {
 	}
 
-	// Adds obj to this collection.  Returns true if successful;
+	// Adds obj to this collection. Returns true if successful;
 	// otherwise returns false.
+	// figure out the head
 	public boolean add(E obj) {
+		if (nodeCount == 0) {
+			head = new ListNode<E>(obj, tail);
+			tail = head;
+		} else {
+			ListNode<E> node = new ListNode<E>(obj);
+			tail.setNext(node);
+			tail = node;
+			nodeCount++;
+		}
+		return true;
 	}
 
 	// Removes the first element that is equal to obj, if any.
 	// Returns true if successful; otherwise returns false.
 	public boolean remove(E obj) {
-		
+
 	}
 
-	// Returns the i-th element.               
+	// Returns the i-th element.
 	public E get(int i) {
 	}
 
@@ -68,14 +87,23 @@ public class SinglyLinkedList<E> {
 	// Removes the i-th element and returns its value.
 	// Decrements the size of the list by one.
 	public E remove(int i) {
-		
+
 	}
 
-	// Returns a string representation of this list exactly like that for MyArrayList.
+	// Returns a string representation of this list exactly like that for
+	// MyArrayList.
+	@SuppressWarnings("unchecked")
 	public String toString() {
-
-
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		E temp = (E) getHead();
+		sb.append(temp);
+		while (((ListNode<E>) temp).getNext() != null) {
+			sb.append(((ListNode<E>) temp).getNext());
+			sb.append(",");
+		}
+		sb.append("]");
+		return sb.toString();
 	}
-	
 
 }
