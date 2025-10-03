@@ -19,8 +19,10 @@ public class SinglyLinkedList<E> {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public SinglyLinkedList(Object[] values) {
         this();
-        for (Object value : values) {
-            add((E) value);
+        if (values != null) {
+            for (Object value : values) {
+                add((E) value);
+            }
         }
     }
 
@@ -45,9 +47,12 @@ public class SinglyLinkedList<E> {
     // Returns true if this list contains an element equal to obj;
     // otherwise returns false.
     public boolean contains(E obj) {
+        if (head == null) {
+            return false;
+        }
         ListNode<E> temp = head;
-        for (int i = 0; i < nodeCount; i++) {
-            if (temp.getValue().equals(obj)) {
+        while (temp != null) {
+            if (obj == null ? temp.getValue() == null : obj.equals(temp.getValue())) {
                 return true;
             }
             temp = temp.getNext();
@@ -161,8 +166,13 @@ public class SinglyLinkedList<E> {
         if (i < 0 || i >= nodeCount) {
             throw new IndexOutOfBoundsException();
         }
-        E temp = head.getValue();
-        if (i == 0) {
+        E temp;
+        if (nodeCount == 1) {
+            temp = head.getValue();
+            head = null;
+            tail = null;
+        } else if (i == 0) {
+            temp = head.getValue();
             head = head.getNext();
             if (head == null) {
                 tail = null;
@@ -176,15 +186,17 @@ public class SinglyLinkedList<E> {
                 tail = temp2;
             }
         }
-
         nodeCount--;
-        return (E) temp;
+        return temp;
     }
 
     // Returns a string representation of this list exactly like that for
     // MyArrayList.
     @Override
     public String toString() {
+        if (nodeCount == 0) {
+            return "[]";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         E temp = (E) getHead();
