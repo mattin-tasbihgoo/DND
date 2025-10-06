@@ -15,12 +15,19 @@ public class SinglyLinkedList<E> {
 
     // Constructor: creates a list that contains
     // all elements from the array values, in the same order
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public SinglyLinkedList(Object[] values) {
         this();
         if (values != null) {
             for (Object value : values) {
-                add((E) value);
+                ListNode<E> temp = new ListNode<>((E) value);
+                if (head == null) {
+                    head = temp;
+                    tail = head;
+                } else {
+                    tail.setNext(temp);
+                    tail = temp;
+                }
+                nodeCount++;
             }
         }
     }
@@ -94,9 +101,8 @@ public class SinglyLinkedList<E> {
         if (head == null) {
             return false;
         }
-        ListNode<E> temp = head;
 
-        if (head.getValue().equals(obj)) {
+        if ((obj == null && head.getValue() == null) || (obj != null && obj.equals(head.getValue()))) {
             head = head.getNext();
             nodeCount--;
             if (head == null) {
@@ -105,8 +111,10 @@ public class SinglyLinkedList<E> {
             return true;
         }
 
+        ListNode<E> temp = head;
         while (temp.getNext() != null) {
-            if (temp.getNext().getValue().equals(obj)) {
+            E temp2 = temp.getNext().getValue();
+            if ((obj == null && temp2 == null) || (obj != null && obj.equals(temp2))) {
                 if (temp.getNext() == tail) {
                     tail = temp;
                 }
@@ -129,6 +137,7 @@ public class SinglyLinkedList<E> {
 
     // Replaces the i-th element with obj and returns the old value.
     public E set(int i, Object obj) {
+        if (i < 0 || i >= nodeCount) throw new IndexOutOfBoundsException();
         ListNode<E> temp = forHelper(0, i);
         E temp2 = temp.getValue();
         temp.setValue((E) obj);
@@ -138,16 +147,17 @@ public class SinglyLinkedList<E> {
     // Inserts obj to become the i-th element. Increments the size
     // of the list by one.
     public void add(int i, Object obj) {
-        if (i < 0 || i > nodeCount) {
-            throw new IndexOutOfBoundsException();
-        }
+        if (i < 0 || i > nodeCount) throw new IndexOutOfBoundsException();
         ListNode<E> temp = new ListNode<>((E) obj);
         if (i == 0) {
             temp.setNext(head);
             head = temp;
-            if (nodeCount == 0) {
+            if (nodeCount == 0 || tail == null) {
                 tail = temp;
             }
+        } else if (i == nodeCount) {
+            tail.setNext(temp);
+            tail = temp;
         } else {
             ListNode<E> temp2 = forHelper(0, i - 1);
             temp.setNext(temp2.getNext());
