@@ -235,29 +235,39 @@ public class DoublyLinkedList {
             ListNode2<Nucleotide> segCurr = segHead;
             ListNode2<Nucleotide> listCurr = current;
             boolean match = true;
+            int count = 0;
 
-            for (int i = 0; i < seg.size() && listCurr != SENTINEL; i++) {
-                if (segCurr == null || listCurr == null || segCurr.getValue() == null || listCurr.getValue() == null ||
-                        !listCurr.getValue().equals(segCurr.getValue())) {
+            for (int i = 0; i < seg.size() && listCurr != SENTINEL && segCurr != seg.getSentinel(); i++) {
+                if (segCurr == null || listCurr == null) {
                     match = false;
                     break;
                 }
+
+                Nucleotide segValue = segCurr.getValue();
+                Nucleotide listValue = listCurr.getValue();
+
+                if ((segValue == null && listValue != null) ||
+                        (segValue != null && listValue == null) ||
+                        (segValue != null && !segValue.equals(listValue))) {
+                    match = false;
+                    break;
+                }
+
                 listCurr = listCurr.getNext();
                 segCurr = segCurr.getNext();
+                count++;
             }
 
-            if (match && segCurr == seg.getSentinel()) {
+            if (match && count == seg.size()) {
                 ListNode2<Nucleotide> nodeAfter = current;
                 for (int i = 0; i < seg.size(); i++) {
                     nodeAfter = nodeAfter.getNext();
                 }
 
-                if (current.getPrevious() != null && nodeAfter != null) {
-                    current.getPrevious().setNext(nodeAfter);
-                    nodeAfter.setPrevious(current.getPrevious());
-                    nodeCount -= seg.size();
-                    return true;
-                }
+                current.getPrevious().setNext(nodeAfter);
+                nodeAfter.setPrevious(current.getPrevious());
+                nodeCount -= seg.size();
+                return true;
             }
 
             current = current.getNext();
