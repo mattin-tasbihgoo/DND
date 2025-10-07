@@ -17,7 +17,8 @@ public class MyArrayList<E> {
     @SuppressWarnings("unchecked")
     // Big O: 1
     public MyArrayList(int initialCapacity) {
-        if (initialCapacity < 0) throw new IllegalArgumentException();
+        if (initialCapacity < 0)
+            throw new IllegalArgumentException();
         this.internalArray = (E[]) new Object[initialCapacity];
         this.objectCount = 0;
     }
@@ -41,6 +42,10 @@ public class MyArrayList<E> {
     // Big O: 1
     public E set(int index, E obj) {
         checkIndex(index);
+        /*
+         * if (obj == null)
+         * return null;
+         */
         E temp = internalArray[index];
         internalArray[index] = obj;
         return temp;
@@ -55,7 +60,10 @@ public class MyArrayList<E> {
     public void add(int index, E obj) {
         if (index < 0 || index > objectCount) {
             throw new IndexOutOfBoundsException();
-        }
+        } /*
+           * if (obj == null)
+           * throw new IllegalArgumentException();
+           */
         capCheck(objectCount + 1);
         int num = objectCount - index;
         if (num > 0) {
@@ -120,7 +128,6 @@ public class MyArrayList<E> {
         return -1;
     }
 
-    
     private void checkIndex(int index) {
         if (index < 0 || index >= objectCount) {
             throw new IndexOutOfBoundsException();

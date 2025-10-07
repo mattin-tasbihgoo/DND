@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 
-//big ): n
+//big (O): n
 public class PugSaver {
 
 	public static MyArrayList<Dog> rescuePugs(MyArrayList<Dog> list) {
