@@ -10,6 +10,8 @@ public class DoublyLinkedList {
     // Constructor: creates an empty list
     public DoublyLinkedList() {
         nodeCount = 0;
+        SENTINEL.setNext(SENTINEL);
+        SENTINEL.setPrevious(SENTINEL);
     }
 
     // Constructor: creates a list that contains
@@ -51,35 +53,40 @@ public class DoublyLinkedList {
     // Returns true if this list contains an element equal to obj;
     // otherwise returns false.
     public boolean contains(Nucleotide obj) {
-        ListNode2 temp = SENTINEL;
-        for (int i = 0; i < nodeCount; i++) {
+        ListNode2 temp = SENTINEL.getNext();
+        while (temp != SENTINEL) {
             if (temp.getValue().equals(obj)) {
                 return true;
             }
+            temp = temp.getNext();
         }
         return false;
     }
 
     // Returns the index of the first element in equal to obj;
     // if not found, returns -1.
-    public int indexOf(Nucleotide obj) {
-        ListNode2 temp = SENTINEL;
-        for (int i = 0; i < nodeCount; i++) {
-            if (temp.getValue().equals(obj)) {
-                return i;
-            }
-        }
-        return -1;
-    }
+	public int indexOf(Nucleotide obj) {
+		ListNode2<Nucleotide> temp = SENTINEL.getNext();
+		int i = 0;
+		while (temp != SENTINEL) {
+			if (temp.getValue().equals(obj)) {
+				return i;
+			}
+			temp = temp.getNext();
+			i++;
+		}
+		return -1;
+	}
 
     // Adds obj to this collection. Returns true if successful;
     // otherwise returns false.
     @SuppressWarnings("unchecked")
     public boolean add(Nucleotide obj) {
-        ListNode2 temp = new ListNode2<>(obj, getTail(), getHead());
+        ListNode2 temp = new ListNode2<>(obj, SENTINEL.getPrevious(), SENTINEL);
         if (nodeCount == 0) {
             SENTINEL.setNext(temp);
         }
+        SENTINEL.getPrevious().setNext(temp);
         SENTINEL.setPrevious(temp);
         nodeCount++;
         return true;
@@ -103,24 +110,17 @@ public class DoublyLinkedList {
 
     // Returns the i-th element.
     public Nucleotide get(int i) {
-        if (i < 0 || i >= nodeCount) {
-            throw new IndexOutOfBoundsException();
-        }
+        indexCheck(i);
         ListNode2<Nucleotide> temp = SENTINEL.getNext();
-        for (int j = 0; j < nodeCount; j++) {
-            if (j == i) {
-                return temp.getValue();
-            }
+        for (int j = 0; j < i; j++) {
             temp = temp.getNext();
         }
-        return null;
+        return temp.getValue();
     }
 
     // Replaces the i-th element with obj and returns the old value.
     public Nucleotide set(int i, Nucleotide obj) {
-        if (i < 0 || i >= nodeCount) {
-            throw new IndexOutOfBoundsException();
-        }
+        indexCheck(i);
         ListNode2<Nucleotide> temp = SENTINEL.getNext();
         for (int j = 0; j < nodeCount; j++) {
             if (j == i) {
@@ -136,14 +136,21 @@ public class DoublyLinkedList {
     // Inserts obj to become the i-th element. Increments the size
     // of the list by one.
     public void add(int i, Nucleotide obj) {
+		if (i < 0 || i > nodeCount) throw new IndexOutOfBoundsException();
+		ListNode2<Nucleotide> temp = SENTINEL;
+		for (int j = 0; j < i; j++) 			temp = temp.getNext();
+		// temp is the node before the new one
+		// temp2 is the new node
+		ListNode2<Nucleotide> temp2 = new ListNode2<>(obj, temp, temp.getNext());
+		temp.getNext().setPrevious(temp2);
+		temp.setNext(temp2);
+		nodeCount++;
     }
 
     // Removes the i-th element and returns its value.
     // Decrements the size of the list by one.
     public Nucleotide remove(int i) {
-        if (i < 0 || i >= nodeCount) {
-            throw new IndexOutOfBoundsException();
-        }
+        indexCheck(i);
         ListNode2<Nucleotide> temp = SENTINEL.getNext();
         for (int j = 0; j < nodeCount; j++) {
             if (j == i) {
@@ -159,21 +166,23 @@ public class DoublyLinkedList {
 
     // Returns a string representation of this list exactly like that for
     // MyArrayList.
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        ListNode2<Nucleotide> temp = SENTINEL.getNext();
-        while (temp != null) {
-            sb.append((temp).getValue());
-            if ((temp).getNext() != null) {
-                sb.append(", ");
-            }
-            temp = (temp).getNext();
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		ListNode2<Nucleotide> temp = SENTINEL.getNext();
+		if (temp != SENTINEL) { // in case there's nothing
+			sb.append(temp.getValue());
+			temp = temp.getNext();
+		}
+		while (temp != SENTINEL) {
+			sb.append(", ");
+			sb.append(temp.getValue());
+			temp = temp.getNext();
+		}
+		sb.append("]");
+		return sb.toString();
+	}
 
     // Like question 7 on the SinglyLinkedList test:
     // Add a "segment" (another list) onto the end of this list
@@ -294,5 +303,11 @@ public class DoublyLinkedList {
             }
         }
     }
+
+	public void indexCheck(int i) {
+		if (i < 0 || i >= nodeCount) {
+			throw new IndexOutOfBoundsException();
+		}
+	}
 
 }
