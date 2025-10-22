@@ -15,16 +15,17 @@ public class Recursion {
 	// Trying to infect outside the confines of the grid also has no effect
 	// Precondition: grid has no null entries
 	public static void infect(String[][] grid, int r, int c) {
-		if (grid[r][c].equals(null)) {
+		if (r < 0 || c < 0 || r >= grid.length) {
+			return;
+		} else if (c >= grid[r].length) {
 			return;
 		} else if (!grid[r][c].equals("v")) {
 			grid[r][c] = "i";
-		} else {
-			infect(grid, r + 1, c);
-			infect(grid, r, c + 1);
-			infect(grid, r - 1, c);
-			infect(grid, r, c - 1);
 		}
+		infect(grid, r + 1, c);
+		infect(grid, r, c + 1);
+		infect(grid, r - 1, c);
+		infect(grid, r, c - 1);
 	}
 
 	// How many subsets are there of the numbers 1...n
