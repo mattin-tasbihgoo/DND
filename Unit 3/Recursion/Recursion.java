@@ -15,16 +15,15 @@ public class Recursion {
 	// Trying to infect outside the confines of the grid also has no effect
 	// Precondition: grid has no null entries
 	public static void infect(String[][] grid, int r, int c) {
-		if (r < 0 || c < 0 || r >= grid.length) {
+		if (r < 0 || c < 0 || r >= grid.length || c >= grid[r].length)
 			return;
-		} else if (c >= grid[r].length) {
+		String cell = grid[r][c];
+		if ("vaccinated".equals(cell) || "infected".equals(cell))
 			return;
-		} else if (!grid[r][c].equals("v")) {
-			grid[r][c] = "i";
-		}
+		grid[r][c] = "infected";
 		infect(grid, r + 1, c);
-		infect(grid, r, c + 1);
 		infect(grid, r - 1, c);
+		infect(grid, r, c + 1);
 		infect(grid, r, c - 1);
 	}
 
@@ -36,7 +35,18 @@ public class Recursion {
 	// {1,2}, {2,3}, {3,4}, {1,2,3}, {1,2,4}, {1,3,4}, {1,2,3,4}
 	// Precondition: n > 0
 	public static long countNonConsecutiveSubsets(int n) {
-
+		if (n <= 0)
+			return 1L;
+		if (n == 1)
+			return 2L;
+		long a = 1L;
+		long b = 2L;
+		for (int i = 2; i <= n; i++) {
+			long c = a + b;
+			a = b;
+			b = c;
+		}
+		return b;
 	}
 
 	// A kid at the bottom of the stairs can jump up 1, 2, or 3 stairs at a time.
@@ -44,7 +54,24 @@ public class Recursion {
 	// Jumping 1-1-2 is considered different than jumping 1-2-1
 	// Precondition: n > 0
 	public static long countWaysToJumpUpStairs(int n) {
-
+		if (n <= 0)
+			return 0L;
+		if (n == 1)
+			return 1L;
+		if (n == 2)
+			return 2L;
+		if (n == 3)
+			return 4L;
+		long a = 1L;
+		long b = 2L;
+		long c = 4L;
+		for (int i = 4; i <= n; i++) {
+			long d = a + b + c;
+			a = b;
+			b = c;
+			c = d;
+		}
+		return c;
 	}
 
 	// Everything above this line does NOT require a recursive helper method
