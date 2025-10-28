@@ -35,18 +35,13 @@ public class Recursion {
 	// {1,2}, {2,3}, {3,4}, {1,2,3}, {1,2,4}, {1,3,4}, {1,2,3,4}
 	// Precondition: n > 0
 	public static long countNonConsecutiveSubsets(int n) {
-		if (n <= 0)
-			return 1L;
-		if (n == 1)
-			return 2L;
-		long a = 1L;
-		long b = 2L;
-		for (int i = 2; i <= n; i++) {
-			long c = a + b;
-			a = b;
-			b = c;
-		}
-		return b;
+		long num = 0;
+		if (n <= 2)
+			return n + 1;
+
+		num = countNonConsecutiveSubsets(n - 1) + countNonConsecutiveSubsets(n - 2);
+
+		return num;
 	}
 
 	// A kid at the bottom of the stairs can jump up 1, 2, or 3 stairs at a time.
@@ -54,24 +49,7 @@ public class Recursion {
 	// Jumping 1-1-2 is considered different than jumping 1-2-1
 	// Precondition: n > 0
 	public static long countWaysToJumpUpStairs(int n) {
-		if (n <= 0)
-			return 0L;
-		if (n == 1)
-			return 1L;
-		if (n == 2)
-			return 2L;
-		if (n == 3)
-			return 4L;
-		long a = 1L;
-		long b = 2L;
-		long c = 4L;
-		for (int i = 4; i <= n; i++) {
-			long d = a + b + c;
-			a = b;
-			b = c;
-			c = d;
-		}
-		return c;
+
 	}
 
 	// Everything above this line does NOT require a recursive helper method
