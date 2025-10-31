@@ -49,7 +49,9 @@ public class Recursion {
 	// Jumping 1-1-2 is considered different than jumping 1-2-1
 	// Precondition: n > 0
 	public static long countWaysToJumpUpStairs(int n) {
-
+		if (n <= 2)
+			return n;
+		return n - 1 + countNonConsecutiveSubsets(-1);
 	}
 
 	// Everything above this line does NOT require a recursive helper method
@@ -75,7 +77,19 @@ public class Recursion {
 	// "cab", "cba"
 	// Order is your choice
 	public static void printPermutations(String str) {
+		findPermutations("", str);
+	}
 
+	public static void findPermutations(String str, String remaining) {
+		if (remaining.isEmpty()) {
+			System.out.println(str);
+			return;
+		}
+		for (int i = 0; i < remaining.length(); i++) {
+			char c = remaining.charAt(i);
+			String next = remaining.substring(0, i) + remaining.substring(i + 1);
+			findPermutations(str + c, next);
+		}
 	}
 
 	// Performs a mergeSort on the given array of ints
@@ -121,7 +135,7 @@ public class Recursion {
 	// time 9
 	// for a total of 20 points, so it would return 20.
 	public static int scavHunt(int[] times, int[] points) {
-
+		return 0;
 	}
 
 }
