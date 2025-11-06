@@ -1,8 +1,10 @@
 public class RecursionTester {
     public static void main(String[] args) {
-        ListNode third = new ListNode("object");
-        ListNode second = new ListNode("whaddup", third);
-        ListNode head = new ListNode("head", second);
+        /*
+         * ListNode third = new ListNode("object");
+         * ListNode second = new ListNode("whaddup", third);
+         * ListNode head = new ListNode("head", second);
+         */
 
         /*
          * String[][] grid = new String[][] { { "a", "a", "a" }, { "a", "a", "a" }, {
@@ -24,9 +26,11 @@ public class RecursionTester {
          * actual);
          * }
          */
-        String test = "abc";
+        // String test = "abc";
         // Recursion.printPermutations(test);
-        Recursion.printSubsets(test);
+        // Recursion.printSubsets(test);
+
+        Recursion.solveHanoi(3);
     }
 
     /*

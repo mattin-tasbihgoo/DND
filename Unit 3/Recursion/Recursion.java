@@ -152,6 +152,24 @@ public class Recursion {
 	// the form "1 -> 2", meaning "take the top disk of tower 1 and
 	// put it on tower 2" etc.
 	public static void solveHanoi(int startingDisks) {
+		hanoiHelper(startingDisks, 0, 2, 1);
+	}
+
+	// have it so the transfer pole changes based off the start and end pole
+	public static void hanoiHelper(int startingDisks, int startPole, int transPole, int endPole) {
+		if (startingDisks == 0) {
+			return;
+		}
+
+		System.out.println(startPole + " --> " + transPole);
+		System.out.println(startPole + " --> " + endPole);
+		// hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
+		if (startingDisks % 2 == 0) {
+			hanoiHelper(startingDisks - 2, transPole, startPole, endPole);
+		} else {
+			// hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
+		}
+		hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
 
 	}
 
