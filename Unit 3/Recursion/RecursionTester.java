@@ -25,7 +25,8 @@ public class RecursionTester {
          * }
          */
         String test = "abc";
-        Recursion.printPermutations(test);
+        // Recursion.printPermutations(test);
+        Recursion.printSubsets(test);
     }
 
     /*

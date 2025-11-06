@@ -66,7 +66,47 @@ public class Recursion {
 	// For example, subsets("abc") would print out "", "a", "b", "c", "ab", "ac",
 	// "bc", "abc"
 	// Order is your choice
+	/*
+	 * public static void printSubsets(String str) {
+	 * for (int i = 0; i < str.length(); i++) {
+	 * // System.out.print(str.charAt(i));
+	 * StringBuilder sb = new StringBuilder(str.substring(i + 1));
+	 * subsetsHelper(sb, str.charAt(i));
+	 * // System.out.println();
+	 * }
+	 * for (int i = 0; i < str.length(); i++) {
+	 * System.out.println(str.charAt(i));
+	 * }
+	 * System.out.println("");
+	 * }
+	 * 
+	 * public static void subsetsHelper(StringBuilder str, char cha) {
+	 * if (str.length() < 1) {
+	 * return;
+	 * }
+	 * System.out.print(cha);
+	 * System.out.print(str);
+	 * System.out.println();
+	 * subsetsHelper(str.deleteCharAt(str.length() - 1), cha);
+	 * }
+	 */
+
 	public static void printSubsets(String str) {
+		subsetsHelper(str, 0, new StringBuilder());
+	}
+
+	public static void subsetsHelper(String str, int i, StringBuilder sb) {
+		if (i == str.length()) {
+			System.out.println(sb);
+			return;
+		}
+
+		subsetsHelper(str, i + 1, sb);
+
+		sb.append(str.charAt(i));
+		subsetsHelper(str, i + 1, sb);
+
+		sb.deleteCharAt(sb.length() - 1);
 
 	}
 
