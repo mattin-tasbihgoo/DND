@@ -1,3 +1,6 @@
+// import java.util.ArrayList;
+// import java.util.Arrays;
+
 public class Recursion {
 
 	// Prints the value of every node in the singly linked list with the given head,
@@ -138,6 +141,67 @@ public class Recursion {
 
 	}
 
+	// copied from last year
+	/*
+	 * public class MergeSort {
+	 * public static void merge(int[] arr, int leftIndex, int middleIndex, int
+	 * rightIndex) {
+	 * int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
+	 * int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
+	 * int i = 0, j = 0, k = leftIndex;
+	 * 
+	 * // Compare and place elements in the correct order
+	 * while (i < leftArr.length && j < rightArr.length) {
+	 * if (leftArr[i] <= rightArr[j]) {
+	 * arr[k] = leftArr[i++];
+	 * } else {
+	 * arr[k] = rightArr[j++];
+	 * }
+	 * k++;
+	 * }
+	 * 
+	 * // Copy any remaining elements from left array
+	 * while (i < leftArr.length) {
+	 * arr[k++] = leftArr[i++];
+	 * }
+	 * 
+	 * // Copy any remaining elements from right array
+	 * while (j < rightArr.length) {
+	 * arr[k++] = rightArr[j++];
+	 * }
+	 * }
+	 * 
+	 * public static void merge(ArrayList<Integer> list, int leftIndex, int
+	 * middleIndex, int rightIndex) {
+	 * ArrayList<Integer> leftList = new ArrayList<>(list.subList(leftIndex,
+	 * middleIndex + 1));
+	 * ArrayList<Integer> rightList = new ArrayList<>(list.subList(middleIndex + 1,
+	 * rightIndex + 1));
+	 * int i = 0, j = 0, k = leftIndex;
+	 * 
+	 * // Compare and place elements in the correct order
+	 * while (i < leftList.size() && j < rightList.size()) {
+	 * if (leftList.get(i) <= rightList.get(j)) {
+	 * list.set(k, leftList.get(i++));
+	 * } else {
+	 * list.set(k, rightList.get(j++));
+	 * }
+	 * k++;
+	 * }
+	 * 
+	 * // Copy any remaining elements from left list
+	 * while (i < leftList.size()) {
+	 * list.set(k++, leftList.get(i++));
+	 * }
+	 * 
+	 * // Copy any remaining elements from right list
+	 * while (j < rightList.size()) {
+	 * list.set(k++, rightList.get(j++));
+	 * }
+	 * }
+	 * }
+	 */
+
 	// Performs a quickSort on the given array of ints
 	// Use the middle element (index n/2) as the pivot
 	// Precondition: you may assume there are NO duplicates!!!
@@ -152,7 +216,7 @@ public class Recursion {
 	// the form "1 -> 2", meaning "take the top disk of tower 1 and
 	// put it on tower 2" etc.
 	public static void solveHanoi(int startingDisks) {
-		hanoiHelper(startingDisks, 0, 2, 1);
+		hanoiHelper(startingDisks, 0, 1, 2);
 	}
 
 	// have it so the transfer pole changes based off the start and end pole
@@ -161,14 +225,8 @@ public class Recursion {
 			return;
 		}
 
-		System.out.println(startPole + " --> " + transPole);
+		hanoiHelper(startingDisks - 1, startPole, endPole, transPole);
 		System.out.println(startPole + " --> " + endPole);
-		// hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
-		if (startingDisks % 2 == 0) {
-			hanoiHelper(startingDisks - 2, transPole, startPole, endPole);
-		} else {
-			// hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
-		}
 		hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
 
 	}
@@ -193,7 +251,49 @@ public class Recursion {
 	// time 9
 	// for a total of 20 points, so it would return 20.
 	public static int scavHunt(int[] times, int[] points) {
-		return 0;
+		int temp = points[0];
+		for (int i = 0; i < times.length; i++) {
+			if (times[i] > temp) {
+				temp = times[i];
+			}
+			int temp2 = maxRecord(i, times, points);
+			if (temp2 > temp) {
+				temp = temp2;
+			}
+			if (temp2 > temp) {
+				temp = temp2 + 20;
+			}
+			int temp3 = 0;
+			if (i > times.length - 5) {
+				temp3 = maxRecord(i + 5, times, points);
+			}
+			if (temp3 > temp) {
+				temp = temp3;
+			}
+		}
+		return temp;
 	}
 
+	public static int maxRecord(int time, int[] times, int[] points) {
+		int temp = findIndex(time, times);
+		for (int i = time; i < points.length; i++) {
+			if (points[i] > temp) {
+				temp = points[i];
+			}
+		}
+		return temp;
+	}
+
+	// to do: don't get lost in the sauce
+	// to do: find the closest + 5 index when its not in the array.
+	public static int findIndex(int val, int[] values) {
+		int counter = 0;
+		while (val < values.length) {
+			if (values[counter] == val) {
+				return counter;
+			}
+			counter++;
+		}
+		return -1;
+	}
 }

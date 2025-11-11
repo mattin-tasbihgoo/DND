@@ -30,7 +30,9 @@ public class RecursionTester {
         // Recursion.printPermutations(test);
         // Recursion.printSubsets(test);
 
-        Recursion.solveHanoi(3);
+        // Recursion.solveHanoi(5);
+
+        int[] times = new int[] { 2, 6, 7, 20, 21, 40, 41, 43, 45, 47, 51, 53, 62, 63, 64 };
     }
 
     /*
