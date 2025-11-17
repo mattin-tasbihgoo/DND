@@ -6,7 +6,11 @@ public class Recursion {
 	// Prints the value of every node in the singly linked list with the given head,
 	// but in reverse
 	public static void printListInReverse(ListNode head) {
-
+		if (head == null) {
+			return;
+		}
+		printListInReverse(head.getNext());
+		System.out.println(head.getValue());
 	}
 
 	// For the given 2D array of Strings, replaces the String at index[r][c]

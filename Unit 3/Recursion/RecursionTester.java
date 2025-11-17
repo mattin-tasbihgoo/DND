@@ -1,10 +1,10 @@
 public class RecursionTester {
     public static void main(String[] args) {
-        /*
-         * ListNode third = new ListNode("object");
-         * ListNode second = new ListNode("whaddup", third);
-         * ListNode head = new ListNode("head", second);
-         */
+        
+         ListNode third = new ListNode("object");
+         ListNode second = new ListNode("whaddup", third);
+         ListNode head = new ListNode("head", second);
+         Recursion.printListInReverse(head);
 
         /*
          * String[][] grid = new String[][] { { "a", "a", "a" }, { "a", "a", "a" }, {
