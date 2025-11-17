@@ -254,6 +254,9 @@ public class Recursion {
 	// Then the best possible result is getting the item at time 3 and the one at
 	// time 9
 	// for a total of 20 points, so it would return 20.
+
+	// use math.max instead of ifs
+	// use arrays to "remember" maxes insteadof temp junk
 	public static int scavHunt(int[] times, int[] points) {
 		int temp = points[0];
 		for (int i = 0; i < times.length; i++) {
@@ -280,16 +283,26 @@ public class Recursion {
 
 	public static int maxRecord(int time, int[] times, int[] points) {
 		int temp = findIndex(time, times);
-		for (int i = time; i < points.length; i++) {
-			if (points[i] > temp) {
-				temp = points[i];
+		if (temp == -1) {
+			return 0;
+		}
+
+		int n = times.length;
+		int[] best = new int [n + 1];
+		for (int i = n - 1; i >= temp; i--) {
+			int nextIndex = findIndex(times[i] + 5, times);
+			if (nextIndex != -1) {
+				best[i] = Math.max(points[i] + best[nextIndex], best[i + 1]);
+			} else {
+				best[i] = Math.max(points[i], best[i + 1]);
 			}
 		}
-		return temp;
+		return best[temp];
 	}
 
 	// to do: don't get lost in the sauce
 	// to do: find the closest + 5 index when its not in the array.
+	// use binary search
 	public static int findIndex(int val, int[] values) {
 		int counter = 0;
 		while (val < values.length) {
