@@ -255,8 +255,6 @@ public class Recursion {
 	// time 9
 	// for a total of 20 points, so it would return 20.
 
-	// use math.max instead of ifs
-	// use arrays to "remember" maxes insteadof temp junk
 	public static int scavHunt(int[] times, int[] points) {
 		int temp = findIndex(0, times);
 		if (temp == -1) {
@@ -264,7 +262,7 @@ public class Recursion {
 		}
 
 		int n = times.length;
-		int[] best = new int [n + 1];
+		int[] best = new int[n + 1];
 		for (int i = n - 1; i >= temp; i--) {
 			int nextIndex = findIndex(times[i] + 5, times);
 			if (nextIndex != -1) {
@@ -276,17 +274,42 @@ public class Recursion {
 		return best[temp];
 	}
 
-	// to do: don't get lost in the sauce
-	// to do: find the closest + 5 index when its not in the array.
-	// use binary search
 	public static int findIndex(int val, int[] values) {
-		int counter = 0;
-		while (val < values.length) {
-			if (values[counter] == val) {
-				return counter;
+		int left = 0;
+		int right = values.length - 1;
+		while (left <= right) {
+			int mid = left + (right - left) / 2;
+			if (values[mid] == val) {
+				return mid;
+			} else if (values[mid] < val) {
+				left = mid + 1;
+			} else {
+				right = mid - 1;
 			}
-			counter++;
 		}
-		return -1;
+		return left < values.length ? left : -1;
 	}
+
+	// it was lowk easier to do regular binary search instead of tryna maybe convert and reunderstand this bs.
+/* 	public static int binarySearch(int[] arr, int key) {
+		return binarySearchRecursiveHelper(arr, key, 0, arr.length - 1);
+	}
+
+	public static int binarySearchRecursiveHelper(int[] arr, int key, int low, int high) {
+		if (low > high) {
+			return -1;
+		}
+
+		int mid = (low + high) / 2;
+
+		if (arr[mid] == key) {
+			return mid;
+		}
+
+		if (arr[mid] > key) {
+			return binarySearchRecursiveHelper(arr, key, low, mid - 1);
+		}
+
+		return binarySearchRecursiveHelper(arr, key, mid + 1, high);
+	} */
 }
