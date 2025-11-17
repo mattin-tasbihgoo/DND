@@ -258,31 +258,7 @@ public class Recursion {
 	// use math.max instead of ifs
 	// use arrays to "remember" maxes insteadof temp junk
 	public static int scavHunt(int[] times, int[] points) {
-		int temp = points[0];
-		for (int i = 0; i < times.length; i++) {
-			if (times[i] > temp) {
-				temp = times[i];
-			}
-			int temp2 = maxRecord(i, times, points);
-			if (temp2 > temp) {
-				temp = temp2;
-			}
-			if (temp2 > temp) {
-				temp = temp2 + 20;
-			}
-			int temp3 = 0;
-			if (i > times.length - 5) {
-				temp3 = maxRecord(i + 5, times, points);
-			}
-			if (temp3 > temp) {
-				temp = temp3;
-			}
-		}
-		return temp;
-	}
-
-	public static int maxRecord(int time, int[] times, int[] points) {
-		int temp = findIndex(time, times);
+		int temp = findIndex(0, times);
 		if (temp == -1) {
 			return 0;
 		}
