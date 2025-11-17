@@ -1,6 +1,7 @@
 // import java.util.ArrayList;
 // import java.util.Arrays;
 
+// to do: implement merge and quick sort
 public class Recursion {
 
 	// Prints the value of every node in the singly linked list with the given head,
