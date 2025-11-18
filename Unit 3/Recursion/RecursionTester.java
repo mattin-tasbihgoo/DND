@@ -37,7 +37,8 @@ public class RecursionTester {
         // int[] points = new int[] { 20, 15, 30, 5, 10, 25, 40, 50, 35, 45, 55, 60, 70, 80, 90 };
         // Recursion.scavHunt(times, points);
         int[] ints = new int[] {5, 3, 8, 4, 2, 7, 210, 1, 6, 9};
-        Recursion.mergeSort(ints);
+        // Recursion.mergeSort(ints);
+        Recursion.quickSort(ints);
         for (int i : ints) {
             System.out.print(i + " ");
         }

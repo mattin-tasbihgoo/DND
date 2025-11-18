@@ -269,7 +269,42 @@ public class Recursion {
 	// Use the middle element (index n/2) as the pivot
 	// Precondition: you may assume there are NO duplicates!!!
 	public static void quickSort(int[] ints) {
+		if (ints == null || ints.length < 2) {
+			return;
+		}
+		quickSortHelper(ints, 0, ints.length - 1);
+	}
+	private static void quickSortHelper(int[] ints, int left, int right) {
+		if (left >= right) {
+			return;
+		}
 
+		int pivotIndex = left + (right - left) / 2;
+		int pivotValue = ints[pivotIndex];
+
+		// Move pivot to end
+		swap(ints, pivotIndex, right);
+		int temp = left;
+
+		// Partitioning step
+		for (int i = left; i < right; i++) {
+			if (ints[i] < pivotValue) {
+				swap(ints, i, temp);
+				temp++;
+			}
+		}
+
+		// Move pivot to its final place
+		swap(ints, temp, right);
+
+		// Recursively sort elements before and after partition
+		quickSortHelper(ints, left, temp - 1);
+		quickSortHelper(ints, temp + 1, right);
+	}
+	private static void swap(int[] ints, int i, int j) {
+		int temp = ints[i];
+		ints[i] = ints[j];
+		ints[j] = temp;
 	}
 
 	// Prints a sequence of moves (one on each line)
