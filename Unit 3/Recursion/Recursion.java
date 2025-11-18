@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Recursion {
 
@@ -22,7 +20,7 @@ public class Recursion {
 	// Trying to infect outside the confines of the grid also has no effect
 	// Precondition: grid has no null entries
 	public static void infect(String[][] grid, int r, int c) {
-		if (r < 0 || c < 0 || r >= grid.length || c >= grid[r].length)
+		if (grid == null || grid.length == 0 || r < 0 || c < 0 || r >= grid.length || c >= grid[r].length)
 			return;
 		String cell = grid[r][c];
 		if ("vaccinated".equals(cell) || "infected".equals(cell))
@@ -43,6 +41,11 @@ public class Recursion {
 	// Precondition: n > 0
 	public static long countNonConsecutiveSubsets(int n) {
 		long num = 0;
+		if (n < 0)
+			return 0;
+
+		if (n == 0)
+			return 1;
 		if (n <= 2)
 			return n + 1;
 
@@ -120,6 +123,9 @@ public class Recursion {
 	 */
 
 	public static void printSubsets(String str) {
+		if (str == null) {
+			return;
+		}
 		subsetsHelper(str, 0, new StringBuilder());
 	}
 
@@ -145,6 +151,9 @@ public class Recursion {
 	// "cab", "cba"
 	// Order is your choice
 	public static void printPermutations(String str) {
+		if (str == null) {
+			return;
+		}
 		findPermutations("", str);
 	}
 
@@ -211,7 +220,7 @@ public class Recursion {
 
 	// copied from last year
 
-	public static void merge2(int[] arr, int leftIndex, int middleIndex, int rightIndex) {
+	/* public static void merge2(int[] arr, int leftIndex, int middleIndex, int rightIndex) {
 		int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
 		int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
 		int i = 0, j = 0, k = leftIndex;
@@ -263,7 +272,7 @@ public class Recursion {
 		while (j < rightList.size()) {
 			list.set(k++, rightList.get(j++));
 		}
-	}
+	} */
 
 	// Performs a quickSort on the given array of ints
 	// Use the middle element (index n/2) as the pivot
@@ -314,6 +323,9 @@ public class Recursion {
 	// the form "1 -> 2", meaning "take the top disk of tower 1 and
 	// put it on tower 2" etc.
 	public static void solveHanoi(int startingDisks) {
+		if (startingDisks <= 0) {
+			return;
+		}
 		hanoiHelper(startingDisks, 0, 1, 2);
 	}
 
@@ -350,6 +362,9 @@ public class Recursion {
 	// for a total of 20 points, so it would return 20.
 
 	public static int scavHunt(int[] times, int[] points) {
+		if (times == null || points == null || times.length == 0 || points.length == 0 || times.length != points.length) {
+			return 0;
+		}
 		int temp = findIndex(0, times);
 		if (temp == -1) {
 			return 0;
@@ -369,6 +384,9 @@ public class Recursion {
 	}
 
 	public static int findIndex(int val, int[] values) {
+		if (values == null || values.length == 0) {
+			return -1;
+		}
 		int left = 0;
 		int right = values.length - 1;
 		while (left <= right) {
