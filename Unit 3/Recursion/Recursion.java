@@ -370,17 +370,20 @@ public class Recursion {
 			return 0;
 		}
 
-		int n = times.length;
-		int[] best = new int[n + 1];
-		for (int i = n - 1; i >= temp; i--) {
-			int nextIndex = findIndex(times[i] + 5, times);
-			if (nextIndex != -1) {
-				best[i] = Math.max(points[i] + best[nextIndex], best[i + 1]);
-			} else {
-				best[i] = Math.max(points[i], best[i + 1]);
-			}
+		return scavHuntHelper(times, points, temp);
+
+	}
+	public static int scavHuntHelper(int[] times, int[] points, int temp) {
+		if (temp >= times.length) {
+			return 0;
 		}
-		return best[temp];
+		int next = findIndex(times[temp] + 5, times);
+		int keep = points[temp];
+		if (next != -1) {
+			keep += scavHuntHelper(times, points, next);
+		}
+		int skip = scavHuntHelper(times, points, temp + 1);
+		return Math.max(keep, skip);
 	}
 
 	public static int findIndex(int val, int[] values) {
