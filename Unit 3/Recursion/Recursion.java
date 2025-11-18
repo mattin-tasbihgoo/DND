@@ -1,7 +1,6 @@
-// import java.util.ArrayList;
-// import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-// to do: implement merge and quick sort
 public class Recursion {
 
 	// Prints the value of every node in the singly linked list with the given head,
@@ -57,9 +56,30 @@ public class Recursion {
 	// Jumping 1-1-2 is considered different than jumping 1-2-1
 	// Precondition: n > 0
 	public static long countWaysToJumpUpStairs(int n) {
-		if (n <= 2)
-			return n;
-		return n - 1 + countNonConsecutiveSubsets(-1);
+		/*
+		 * switch (n) { // vs code told me to do this
+		 * case 1 -> {
+		 * return 1;
+		 * }
+		 * case 2 -> {
+		 * return 2;
+		 * }
+		 * case 3 -> {
+		 * return 4;
+		 * }
+		 * default -> {
+		 * }
+		 * }
+		 */
+
+		if (n == 1) {
+			return 1;
+		} else if (n == 2) {
+			return 2;
+		} else if (n == 3) {
+			return 4;
+		}
+		return countWaysToJumpUpStairs(n - 1) + countWaysToJumpUpStairs(n - 2) + countWaysToJumpUpStairs(n - 3);
 	}
 
 	// Everything above this line does NOT require a recursive helper method
@@ -142,70 +162,108 @@ public class Recursion {
 
 	// Performs a mergeSort on the given array of ints
 	// Precondition: you may assume there are NO duplicates!!!
-	public static void mergeSort(int[] ints) {
+	public static void mergeSort(int[] arr) {
+		if (arr == null || arr.length < 2) {
+			return;
+		}
+		int[] temp = new int[arr.length];
+		mergeSortHelper(arr, temp, 0, arr.length - 1);
+	}
 
+	private static void mergeSortHelper(int[] arr, int[] temp, int left, int right) {
+		if (left >= right) {
+			return;
+		}
+
+		int mid = left + (right - left) / 2;
+		mergeSortHelper(arr, temp, left, mid);
+		mergeSortHelper(arr, temp, mid + 1, right);
+		merge(arr, temp, left, mid, right);
+	}
+
+	private static void merge(int[] arr, int[] temp, int left, int mid, int right) {
+		int i = left, j = mid + 1, k = left;
+
+		// Merge the two halves into temp
+		while (i <= mid && j <= right) {
+			if (arr[i] <= arr[j]) {
+				temp[k++] = arr[i++];
+			} else {
+				temp[k++] = arr[j++];
+			}
+		}
+
+		// Copy remaining elements of left half
+		while (i <= mid) {
+			temp[k++] = arr[i++];
+		}
+
+		// Copy remaining elements of right half
+		while (j <= right) {
+			temp[k++] = arr[j++];
+		}
+
+		// Copy merged range back into original array
+		for (int l = left; l <= right; l++) {
+			arr[l] = temp[l];
+		}
 	}
 
 	// copied from last year
-	/*
-	 * public class MergeSort {
-	 * public static void merge(int[] arr, int leftIndex, int middleIndex, int
-	 * rightIndex) {
-	 * int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
-	 * int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
-	 * int i = 0, j = 0, k = leftIndex;
-	 * 
-	 * // Compare and place elements in the correct order
-	 * while (i < leftArr.length && j < rightArr.length) {
-	 * if (leftArr[i] <= rightArr[j]) {
-	 * arr[k] = leftArr[i++];
-	 * } else {
-	 * arr[k] = rightArr[j++];
-	 * }
-	 * k++;
-	 * }
-	 * 
-	 * // Copy any remaining elements from left array
-	 * while (i < leftArr.length) {
-	 * arr[k++] = leftArr[i++];
-	 * }
-	 * 
-	 * // Copy any remaining elements from right array
-	 * while (j < rightArr.length) {
-	 * arr[k++] = rightArr[j++];
-	 * }
-	 * }
-	 * 
-	 * public static void merge(ArrayList<Integer> list, int leftIndex, int
-	 * middleIndex, int rightIndex) {
-	 * ArrayList<Integer> leftList = new ArrayList<>(list.subList(leftIndex,
-	 * middleIndex + 1));
-	 * ArrayList<Integer> rightList = new ArrayList<>(list.subList(middleIndex + 1,
-	 * rightIndex + 1));
-	 * int i = 0, j = 0, k = leftIndex;
-	 * 
-	 * // Compare and place elements in the correct order
-	 * while (i < leftList.size() && j < rightList.size()) {
-	 * if (leftList.get(i) <= rightList.get(j)) {
-	 * list.set(k, leftList.get(i++));
-	 * } else {
-	 * list.set(k, rightList.get(j++));
-	 * }
-	 * k++;
-	 * }
-	 * 
-	 * // Copy any remaining elements from left list
-	 * while (i < leftList.size()) {
-	 * list.set(k++, leftList.get(i++));
-	 * }
-	 * 
-	 * // Copy any remaining elements from right list
-	 * while (j < rightList.size()) {
-	 * list.set(k++, rightList.get(j++));
-	 * }
-	 * }
-	 * }
-	 */
+
+	public static void merge2(int[] arr, int leftIndex, int middleIndex, int rightIndex) {
+		int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
+		int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
+		int i = 0, j = 0, k = leftIndex;
+
+		// Compare and place elements in the correct order
+		while (i < leftArr.length && j < rightArr.length) {
+			if (leftArr[i] <= rightArr[j]) {
+				arr[k] = leftArr[i++];
+			} else {
+				arr[k] = rightArr[j++];
+			}
+			k++;
+		}
+
+		// Copy any remaining elements from left array
+		while (i < leftArr.length) {
+			arr[k++] = leftArr[i++];
+		}
+
+		// Copy any remaining elements from right array
+		while (j < rightArr.length) {
+			arr[k++] = rightArr[j++];
+		}
+	}
+
+	public static void merge(ArrayList<Integer> list, int leftIndex, int middleIndex, int rightIndex) {
+		ArrayList<Integer> leftList = new ArrayList<>(list.subList(leftIndex,
+				middleIndex + 1));
+		ArrayList<Integer> rightList = new ArrayList<>(list.subList(middleIndex + 1,
+				rightIndex + 1));
+		int i = 0, j = 0, k = leftIndex;
+
+		// Compare and place elements in the correct order
+		while (i < leftList.size() && j < rightList.size()) {
+			if (leftList.get(i) <= rightList.get(j)) {
+				list.set(k, leftList.get(i++));
+			} else {
+				list.set(k, rightList.get(j++));
+			}
+			k++;
+		}
+
+		// Copy any remaining elements from left list
+		while (i < leftList.size()) {
+			list.set(k++, leftList.get(i++));
+		}
+
+		// Copy any remaining elements from right list
+		while (j < rightList.size()) {
+			list.set(k++, rightList.get(j++));
+		}
+	}
 
 	// Performs a quickSort on the given array of ints
 	// Use the middle element (index n/2) as the pivot
@@ -231,7 +289,7 @@ public class Recursion {
 		}
 
 		hanoiHelper(startingDisks - 1, startPole, endPole, transPole);
-		System.out.println(startPole + " --> " + endPole);
+		System.out.println(startPole + " -> " + endPole);
 		hanoiHelper(startingDisks - 1, transPole, startPole, endPole);
 
 	}
@@ -291,26 +349,30 @@ public class Recursion {
 		return left < values.length ? left : -1;
 	}
 
-	// it was lowk easier to do regular binary search instead of tryna maybe convert and reunderstand this bs.
-/* 	public static int binarySearch(int[] arr, int key) {
-		return binarySearchRecursiveHelper(arr, key, 0, arr.length - 1);
-	}
-
-	public static int binarySearchRecursiveHelper(int[] arr, int key, int low, int high) {
-		if (low > high) {
-			return -1;
-		}
-
-		int mid = (low + high) / 2;
-
-		if (arr[mid] == key) {
-			return mid;
-		}
-
-		if (arr[mid] > key) {
-			return binarySearchRecursiveHelper(arr, key, low, mid - 1);
-		}
-
-		return binarySearchRecursiveHelper(arr, key, mid + 1, high);
-	} */
+	// it was lowk easier to do regular binary search instead of tryna maybe convert
+	// and reunderstand this bs.
+	/*
+	 * public static int binarySearch(int[] arr, int key) {
+	 * return binarySearchRecursiveHelper(arr, key, 0, arr.length - 1);
+	 * }
+	 * 
+	 * public static int binarySearchRecursiveHelper(int[] arr, int key, int low,
+	 * int high) {
+	 * if (low > high) {
+	 * return -1;
+	 * }
+	 * 
+	 * int mid = (low + high) / 2;
+	 * 
+	 * if (arr[mid] == key) {
+	 * return mid;
+	 * }
+	 * 
+	 * if (arr[mid] > key) {
+	 * return binarySearchRecursiveHelper(arr, key, low, mid - 1);
+	 * }
+	 * 
+	 * return binarySearchRecursiveHelper(arr, key, mid + 1, high);
+	 * }
+	 */
 }

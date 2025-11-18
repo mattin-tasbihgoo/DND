@@ -2,10 +2,10 @@
 public class RecursionTester {
     public static void main(String[] args) {
         
-         ListNode third = new ListNode("object");
-         ListNode second = new ListNode("whaddup", third);
-         ListNode head = new ListNode("head", second);
-         Recursion.printListInReverse(head);
+        //  ListNode third = new ListNode("object");
+        //  ListNode second = new ListNode("whaddup", third);
+        //  ListNode head = new ListNode("head", second);
+        //  Recursion.printListInReverse(head);
 
         /*
          * String[][] grid = new String[][] { { "a", "a", "a" }, { "a", "a", "a" }, {
@@ -33,9 +33,15 @@ public class RecursionTester {
 
         // Recursion.solveHanoi(5);
 
-        int[] times = new int[] { 2, 6, 7, 20, 21, 40, 41, 43, 45, 47, 51, 53, 62, 63, 64 };
-        int[] points = new int[] { 20, 15, 30, 5, 10, 25, 40, 50, 35, 45, 55, 60, 70, 80, 90 };
-        Recursion.scavHunt(times, points);
+        // int[] times = new int[] { 2, 6, 7, 20, 21, 40, 41, 43, 45, 47, 51, 53, 62, 63, 64 };
+        // int[] points = new int[] { 20, 15, 30, 5, 10, 25, 40, 50, 35, 45, 55, 60, 70, 80, 90 };
+        // Recursion.scavHunt(times, points);
+        int[] ints = new int[] {5, 3, 8, 4, 2, 7, 210, 1, 6, 9};
+        Recursion.mergeSort(ints);
+        for (int i : ints) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
     }
 
     /*
