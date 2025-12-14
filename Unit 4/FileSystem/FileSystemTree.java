@@ -4,7 +4,7 @@
  */
 public class FileSystemTree {
 
-    private FolderNode root;
+    private final FolderNode root;
 
     /**
      * Constructs a file system with a single root directory.

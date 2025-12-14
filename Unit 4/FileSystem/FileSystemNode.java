@@ -4,8 +4,8 @@
  */
 public abstract class FileSystemNode {
 
-    private String name;
-    private FolderNode parent;
+    private final String name;
+    private final FolderNode parent;
 
     public FileSystemNode(String name, FolderNode parent) {
         this.name = name;
@@ -73,7 +73,14 @@ public abstract class FileSystemNode {
      */
     @Override
     public String toString() {
-        // TODO: build a string like "/root/folder/subfolder/file"
-        return null;
+        if (parent == null) {
+            return name + "/";
+        } else {
+            String suffix = "";
+            if (isFolder()) {
+                suffix = "/";
+            }
+            return parent.toString() + name + suffix;
+        }
     }
 }

@@ -27,27 +27,51 @@ public class Navigator {
      */
     public void run() {
         shouldExit = false;
-        Scanner kb = new Scanner(System.in);
-
-        while (!shouldExit) {
-            // Prompt can be customized to show current path if desired.
-            String line = kb.nextLine();
-            processUserInputString(line);
+        try (Scanner kb = new Scanner(System.in)) {
+            while (!shouldExit) {
+                // Prompt can be customized to show current path if desired.
+                String line = kb.nextLine();
+                processUserInputString(line);
+            }
         }
-
-        kb.close();
     }
 
     /**
      * Changes the current directory based on a single path argument.
      * Behavior should mirror typical Unix shells:
-     *   - "."  refers to the current directory (no change).
-     *   - ".." moves to the parent directory (if one exists).
-     *   - Paths starting with "/" are interpreted from the root directory.
-     *   - Other paths are interpreted relative to the current directory.
+     * - "." refers to the current directory (no change).
+     * - ".." moves to the parent directory (if one exists).
+     * - Paths starting with "/" are interpreted from the root directory.
+     * - Other paths are interpreted relative to the current directory.
      */
     private void cd(String[] args) {
-        // TODO: implement directory navigation
+        if (args.length != 1) {
+            return;
+        }
+        String path = args[0].trim();
+
+        if (path.isEmpty() || path.equals(".")) {
+            return;
+        } 
+        FolderNode temp = path.startsWith("/") ? fileSystem.getRoot() : currentDirectory;
+
+        String[] parts = path.split("/");
+        for (String part : parts) {
+            if (part.isEmpty() || part.equals(".")) {
+            } else if (part.equals("..")) {
+                if (temp.getParent() != null) {
+                    temp = temp.getParent();
+                }
+            } else {
+                FileSystemNode child = temp.getChildByName(part);
+                if (child instanceof FolderNode folderNode) {
+                    temp = folderNode;
+                } else {
+                    return;
+                }
+            }
+        }
+        currentDirectory = temp;
     }
 
     /**
@@ -62,18 +86,21 @@ public class Navigator {
      * Creates a new directory inside the current directory using the provided name.
      */
     private void mkdir(String[] args) {
-        // TODO: read folder name from args and delegate to currentDirectory.addFolder(...)
+        // TODO: read folder name from args and delegate to
+        // currentDirectory.addFolder(...)
     }
 
     /**
      * Creates a new file inside the current directory with a given name and size.
      */
     private void touch(String[] args) {
-        // TODO: read file name and size from args and delegate to currentDirectory.addFile(...)
+        // TODO: read file name and size from args and delegate to
+        // currentDirectory.addFile(...)
     }
 
     /**
-     * Searches the current directory and its descendants for nodes with a given name
+     * Searches the current directory and its descendants for nodes with a given
+     * name
      * and prints their paths.
      */
     private void find(String[] args) {
@@ -81,7 +108,8 @@ public class Navigator {
     }
 
     /**
-     * Prints the absolute path of the current directory, from the root to this node.
+     * Prints the absolute path of the current directory, from the root to this
+     * node.
      */
     private void pwd(String[] args) {
         // TODO: use currentDirectory.toString() or similar path builder
@@ -139,21 +167,21 @@ public class Navigator {
      * then forwarding control to the appropriate helper method.
      *
      * Example inputs and how they are interpreted:
-     *   "ls"
-     *       -> command: "ls"
-     *          args: []
+     * "ls"
+     * -> command: "ls"
+     * args: []
      *
-     *   "mkdir docs"
-     *       -> command: "mkdir"
-     *          args: ["docs"]
+     * "mkdir docs"
+     * -> command: "mkdir"
+     * args: ["docs"]
      *
-     *   "touch notes.txt 100"
-     *       -> command: "touch"
-     *          args: ["notes.txt", "100"]
+     * "touch notes.txt 100"
+     * -> command: "touch"
+     * args: ["notes.txt", "100"]
      *
-     *   "cd .."
-     *       -> command: "cd"
-     *          args: [".."]
+     * "cd .."
+     * -> command: "cd"
+     * args: [".."]
      */
     public void processUserInputString(String line) {
         if (line == null || line.trim().isEmpty()) {

@@ -4,7 +4,7 @@
  */
 public class FileNode extends FileSystemNode {
 
-    private int size;
+    private final int size;
 
     /**
      * Constructs a file with a given parent, name, and size in bytes (or units).
@@ -28,19 +28,19 @@ public class FileNode extends FileSystemNode {
 
     @Override
     public int getHeight() {
-        // Files are leaf nodes and therefore have value 0.
+        // A file is a leaf node, so its height is 0.
         return 0;
     }
 
     @Override
     public int getSize() {
-        // The total contribution of a file is its own size.
-        return 0;
+        // A file's size is its own size.
+        return size;
     }
 
     @Override
     public int getTotalNodeCount() {
-        // A single file contributes exactly one node.
-        return 0;
+        // A file counts as a single node.
+        return 1;
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class FolderNode extends FileSystemNode {
 
-    private List<FileSystemNode> children;
+    private final List<FileSystemNode> children;
 
     public FolderNode(String name, FolderNode parent) {
         super(name, parent);
@@ -76,7 +76,7 @@ public class FolderNode extends FileSystemNode {
      * toString().
      */
     public boolean containsNameRecursive(String searchName) {
-        if (children.size() == 0)
+        if (children.isEmpty())
             return false;
         for (FileSystemNode child : children) {
             if (getChildByName(searchName) != null)
@@ -115,13 +115,19 @@ public class FolderNode extends FileSystemNode {
 
     @Override
     public int getSize() {
-        // TODO: sum the sizes of all files contained in this directory and its
-        return 0;
+        int totalSize = 0;
+        for (FileSystemNode child : children) {
+            totalSize += child.getSize();
+        }
+        return totalSize;
     }
 
     @Override
     public int getTotalNodeCount() {
-        // TODO: count this directory plus all descendant files and folders
-        return 0;
+        int totalCount = 0;
+        for (FileSystemNode child : children) {
+            totalCount += child.getTotalNodeCount(); // recurse into the folder
+        }
+        return totalCount;
     }
 }
