@@ -52,7 +52,7 @@ public class Navigator {
 
         if (path.isEmpty() || path.equals(".")) {
             return;
-        } 
+        }
         FolderNode temp = path.startsWith("/") ? fileSystem.getRoot() : currentDirectory;
 
         String[] parts = path.split("/");
@@ -78,8 +78,13 @@ public class Navigator {
      * Lists all items contained directly in the current directory.
      * Output formatting can mirror typical file system listings.
      */
+    // TODO: make it more unix like?
     private void ls(String[] args) {
-        // TODO: print names of all child nodes of currentDirectory
+        if (args.length != 0)
+            return;
+        for (FileSystemNode child : currentDirectory.getChildren()) {
+            System.out.println(child.getName());
+        }
     }
 
     /**
@@ -103,8 +108,9 @@ public class Navigator {
      * name
      * and prints their paths.
      */
+
     private void find(String[] args) {
-        // TODO: use recursive search starting at currentDirectory
+        // TODO
     }
 
     /**
@@ -112,7 +118,9 @@ public class Navigator {
      * node.
      */
     private void pwd(String[] args) {
-        // TODO: use currentDirectory.toString() or similar path builder
+        if (args.length != 0)
+            return;
+        System.out.println(currentDirectory.toString());
     }
 
     /**
@@ -128,14 +136,18 @@ public class Navigator {
      * and all of its subdirectories.
      */
     private void count(String[] args) {
-        // TODO: call a counting method on currentDirectory
+        if (args.length != 0)
+            return;
+        System.out.println(currentDirectory.getTotalNodeCount());
     }
 
     /**
      * Prints the total size of all files reachable from the current directory.
      */
     private void size(String[] args) {
-        // TODO: call a size-calculation method on currentDirectory
+        if (args.length != 0)
+            return;
+        System.out.println(currentDirectory.getSize());
     }
 
     /**
@@ -143,7 +155,9 @@ public class Navigator {
      * from the root directory down to this directory.
      */
     private void depth(String[] args) {
-        // TODO: use a depth method on currentDirectory
+        if (args.length != 0)
+            return;
+        System.out.println(currentDirectory.getDepth());
     }
 
     /**
@@ -152,12 +166,15 @@ public class Navigator {
      * An empty directory has value 0.
      */
     private void height(String[] args) {
-        // TODO: use a height method on currentDirectory
+        if (args.length != 0)
+            return;
+        System.out.println(currentDirectory.getHeight());
     }
 
     /**
      * Signals that the interactive loop should terminate after the current command.
      */
+    @SuppressWarnings("unused")
     private void quit(String[] args) {
         shouldExit = true;
     }
@@ -194,44 +211,19 @@ public class Navigator {
         System.arraycopy(parts, 1, args, 0, args.length);
 
         switch (command) {
-            case "cd":
-                cd(args);
-                break;
-            case "ls":
-                ls(args);
-                break;
-            case "mkdir":
-                mkdir(args);
-                break;
-            case "touch":
-                touch(args);
-                break;
-            case "find":
-                find(args);
-                break;
-            case "pwd":
-                pwd(args);
-                break;
-            case "tree":
-                tree(args);
-                break;
-            case "count":
-                count(args);
-                break;
-            case "size":
-                size(args);
-                break;
-            case "depth":
-                depth(args);
-                break;
-            case "height":
-                height(args);
-                break;
-            case "quit":
-                quit(args);
-                break;
-            default:
-                // Unknown commands can be reported back to the user.
+            case "cd" -> cd(args);
+            case "ls" -> ls(args);
+            case "mkdir" -> mkdir(args);
+            case "touch" -> touch(args);
+            case "find" -> find(args);
+            case "pwd" -> pwd(args);
+            case "tree" -> tree(args);
+            case "count" -> count(args);
+            case "size" -> size(args);
+            case "depth" -> depth(args);
+            case "height" -> height(args);
+            case "quit" -> quit(args);
+            default -> // Unknown commands can be reported back to the user.
                 System.out.println("Unrecognized command: " + command);
         }
     }
