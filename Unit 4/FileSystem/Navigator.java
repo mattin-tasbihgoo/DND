@@ -58,14 +58,15 @@ public class Navigator {
         String[] parts = path.split("/");
         for (String part : parts) {
             if (part.isEmpty() || part.equals(".")) {
+                continue;
             } else if (part.equals("..")) {
                 if (temp.getParent() != null) {
-                    temp = temp.getParent();
+                    temp = temp.getParent(); // root
                 }
             } else {
                 FileSystemNode child = temp.getChildByName(part);
-                if (child instanceof FolderNode folderNode) {
-                    temp = folderNode;
+                if (child.isFolder()) {
+                    temp = (FolderNode) child;
                 } else {
                     return;
                 }
@@ -78,7 +79,6 @@ public class Navigator {
      * Lists all items contained directly in the current directory.
      * Output formatting can mirror typical file system listings.
      */
-    // TODO: make it more unix like?
     private void ls(String[] args) {
         if (args.length != 0)
             return;
@@ -91,16 +91,18 @@ public class Navigator {
      * Creates a new directory inside the current directory using the provided name.
      */
     private void mkdir(String[] args) {
-        // TODO: read folder name from args and delegate to
-        // currentDirectory.addFolder(...)
+        if (args.length != 0)
+            return;
+        currentDirectory.addFolder(args[0]);
     }
 
     /**
      * Creates a new file inside the current directory with a given name and size.
      */
     private void touch(String[] args) {
-        // TODO: read file name and size from args and delegate to
-        // currentDirectory.addFile(...)
+        if (args.length != 2)
+            return;
+        currentDirectory.addFile(args[0], Integer.parseInt(args[1]));
     }
 
     /**
@@ -110,7 +112,23 @@ public class Navigator {
      */
 
     private void find(String[] args) {
-        // TODO
+        if (args.length != 1)
+            return;
+        findHelper(args[1]);
+    }
+
+    public void findHelper(String searchName) {
+        if (currentDirectory.getChildren().isEmpty())
+            return;
+        for (FileSystemNode child : currentDirectory.getChildren()) {
+            if (currentDirectory.getChildByName(searchName) != null)
+                return;
+            if (child.isFolder()) {
+                FolderNode temp = (FolderNode) child;
+                temp.containsNameRecursive(searchName);
+            }
+        }
+        return;
     }
 
     /**
@@ -128,7 +146,7 @@ public class Navigator {
      * respecting flags or depth limits if provided by the arguments.
      */
     private void tree(String[] args) {
-        // TODO: implement tree-style printing with indentation and branch characters
+        // TODO
     }
 
     /**

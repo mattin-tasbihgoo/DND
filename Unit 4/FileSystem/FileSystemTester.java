@@ -8,10 +8,12 @@ import java.io.PrintStream;
  * what it's doing plus the observed behavior.or
  *
  * And also assumes (based on our design):
- *  - FileSystemTree#getRoot() returns a non-null FolderNode
- *  - FolderNode has addFolder(String) and addFile(String, int) that return boolean
- *  - FileSystemNode has getDepth(), getHeight(), getSize(), getTotalNodeCount()
- *  - Navigator has processUserInputString(String) which prints results to System.out
+ * - FileSystemTree#getRoot() returns a non-null FolderNode
+ * - FolderNode has addFolder(String) and addFile(String, int) that return
+ * boolean
+ * - FileSystemNode has getDepth(), getHeight(), getSize(), getTotalNodeCount()
+ * - Navigator has processUserInputString(String) which prints results to
+ * System.out
  */
 public class FileSystemTester {
 
@@ -20,6 +22,8 @@ public class FileSystemTester {
         // 1. Construct a tree and check root
         FileSystemTree tree = new FileSystemTree();
         FolderNode root = tree.getRoot();
+        Navigator nav = new Navigator(tree);
+        nav.processUserInputString("");
 
         if (root == null) {
             System.out.println("[FAIL] Root is null. FileSystemTree.getRoot() must return a non-null root folder.");

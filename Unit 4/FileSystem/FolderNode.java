@@ -75,7 +75,6 @@ public class FolderNode extends FileSystemNode {
      * When a match is found, its full path can be printed by the caller using
      * toString().
      */
-    // TODO: integrate to string?
     public boolean containsNameRecursive(String searchName) {
         if (children.isEmpty())
             return false;
