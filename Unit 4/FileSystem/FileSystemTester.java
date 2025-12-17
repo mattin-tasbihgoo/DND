@@ -1,5 +1,3 @@
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 /**
  * Small manual tester for the solution file-system implementation.
@@ -22,7 +20,62 @@ public class FileSystemTester {
         // 1. Construct a tree and check root
         FileSystemTree tree = new FileSystemTree();
         FolderNode root = tree.getRoot();
+
+        root.addFolder("docs");
+        root.addFolder("src");
+
+        FolderNode docs = (FolderNode) root.getChildByName("docs");
+        FolderNode src = (FolderNode) root.getChildByName("src");
+
+        docs.addFile("notes.txt", 100);
+        src.addFile("Main.java", 120);
+
+        System.out.println("Direct method checks");
+        System.out.println("root depth: " + root.getDepth()); // expect 0
+        System.out.println("root height: " + root.getHeight()); // expect 2 (root->docs->notes.txt)
+        System.out.println("root size: " + root.getSize()); // expect 220
+        System.out.println("root total nodes: " + root.getTotalNodeCount()); // expect 5 (root, docs, src, notes, Main)
+
+        System.out.println("\nNavigator command checks");
         Navigator nav = new Navigator(tree);
+
+        nav.processUserInputString("pwd");
+        System.out.println();
+        nav.processUserInputString("ls");
+        System.out.println();
+        nav.processUserInputString("tree");
+        System.out.println();
+
+        nav.processUserInputString("cd docs");
+        System.out.println();
+        nav.processUserInputString("pwd");
+        System.out.println();
+        nav.processUserInputString("ls");
+        System.out.println();
+        nav.processUserInputString("size"); // expect 100
+        System.out.println();
+        nav.processUserInputString("count"); // expect 1 (notes.txt)
+        System.out.println();
+
+        nav.processUserInputString("cd /src");
+        System.out.println();
+        nav.processUserInputString("pwd");
+        System.out.println();
+        nav.processUserInputString("ls");
+        System.out.println();
+        nav.processUserInputString("size"); // expect 120
+        System.out.println();
+        nav.processUserInputString("count"); // expect 1 (Main.java)
+
+        System.out.println("\n find checks (from /src)");
+        nav.processUserInputString("find Main.java"); // should print the path to Main.java
+        System.out.println();
+        nav.processUserInputString("cd /");
+        System.out.println();
+        nav.processUserInputString("find notes.txt"); // should print the path to notes.txt
+        System.out.println();
+
+/*         Navigator nav = new Navigator(tree);
         nav.processUserInputString("");
 
         if (root == null) {
@@ -45,6 +98,6 @@ public class FileSystemTester {
         int depthRoot = root.getDepth();
         int heightRoot = root.getHeight();
         int sizeRoot = root.getSize();
-        int totalNodesRoot = root.getTotalNodeCount();
+        int totalNodesRoot = root.getTotalNodeCount(); */
     }
 }

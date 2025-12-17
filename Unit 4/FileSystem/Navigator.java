@@ -65,7 +65,7 @@ public class Navigator {
                 }
             } else {
                 FileSystemNode child = temp.getChildByName(part);
-                if (child.isFolder()) {
+                if (child != null && child.isFolder()) {
                     temp = (FolderNode) child;
                 } else {
                     return;
@@ -83,7 +83,10 @@ public class Navigator {
         if (args.length != 0)
             return;
         for (FileSystemNode child : currentDirectory.getChildren()) {
-            System.out.println(child.getName());
+            if (child.isFolder())
+                System.out.println(child.getName() + "/");
+            else
+                System.out.println(child.getName());
         }
     }
 
@@ -91,9 +94,13 @@ public class Navigator {
      * Creates a new directory inside the current directory using the provided name.
      */
     private void mkdir(String[] args) {
-        if (args.length != 0)
+        if (args.length != 1)
             return;
-        currentDirectory.addFolder(args[0]);
+        String name = args[0].trim();
+        if (name.isEmpty())
+            return;
+
+        currentDirectory.addFolder(name);
     }
 
     /**
@@ -114,21 +121,16 @@ public class Navigator {
     private void find(String[] args) {
         if (args.length != 1)
             return;
-        findHelper(args[1]);
+        findHelper(currentDirectory, args[0]);
     }
 
-    public void findHelper(String searchName) {
-        if (currentDirectory.getChildren().isEmpty())
-            return;
-        for (FileSystemNode child : currentDirectory.getChildren()) {
-            if (currentDirectory.getChildByName(searchName) != null)
-                return;
-            if (child.isFolder()) {
-                FolderNode temp = (FolderNode) child;
-                temp.containsNameRecursive(searchName);
-            }
+    private void findHelper(FolderNode cur, String searchName) {
+        for (FileSystemNode child : cur.getChildren()) {
+            if (child.getName().equals(searchName))
+                System.out.println(child.toString());
+            if (child.isFolder())
+                findHelper((FolderNode) child, searchName);
         }
-        return;
     }
 
     /**
@@ -146,7 +148,30 @@ public class Navigator {
      * respecting flags or depth limits if provided by the arguments.
      */
     private void tree(String[] args) {
-        // TODO
+        if (args.length != 0)
+            return;
+
+        StringBuilder sb = new StringBuilder();
+        for (FileSystemNode child : currentDirectory.getChildren()) {
+            treeHelper(child, sb, "");
+        }
+        System.out.print(sb);
+    }
+
+    private void treeHelper(FileSystemNode node, StringBuilder sb, String prefix) {
+        sb.append(prefix).append("|---").append(node.getName()).append("\n");
+
+        if (node.isFolder()) {
+            String nextPrefix;
+            if (prefix.length() == 0)
+                nextPrefix = "|   ";
+            else
+                nextPrefix = prefix + "    ";
+
+            for (FileSystemNode child : ((FolderNode) node).getChildren()) {
+                treeHelper(child, sb, nextPrefix);
+            }
+        }
     }
 
     /**
@@ -156,7 +181,7 @@ public class Navigator {
     private void count(String[] args) {
         if (args.length != 0)
             return;
-        System.out.println(currentDirectory.getTotalNodeCount());
+        System.out.println(currentDirectory.getTotalNodeCount() - 1); // exclude current directory
     }
 
     /**
@@ -229,20 +254,46 @@ public class Navigator {
         System.arraycopy(parts, 1, args, 0, args.length);
 
         switch (command) {
-            case "cd" -> cd(args);
-            case "ls" -> ls(args);
-            case "mkdir" -> mkdir(args);
-            case "touch" -> touch(args);
-            case "find" -> find(args);
-            case "pwd" -> pwd(args);
-            case "tree" -> tree(args);
-            case "count" -> count(args);
-            case "size" -> size(args);
-            case "depth" -> depth(args);
-            case "height" -> height(args);
-            case "quit" -> quit(args);
-            default -> // Unknown commands can be reported back to the user.
+            case "cd":
+                cd(args);
+                break;
+            case "ls":
+                ls(args);
+                break;
+            case "mkdir":
+                mkdir(args);
+                break;
+            case "touch":
+                touch(args);
+                break;
+            case "find":
+                find(args);
+                break;
+            case "pwd":
+                pwd(args);
+                break;
+            case "tree":
+                tree(args);
+                break;
+            case "count":
+                count(args);
+                break;
+            case "size":
+                size(args);
+                break;
+            case "depth":
+                depth(args);
+                break;
+            case "height":
+                height(args);
+                break;
+            case "quit":
+                quit(args);
+                break;
+            default: // Unknown commands can be reported back to the user.
                 System.out.println("Unrecognized command: " + command);
+                break;
         }
+
     }
 }

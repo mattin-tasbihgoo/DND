@@ -73,14 +73,8 @@ public abstract class FileSystemNode {
      */
     @Override
     public String toString() {
-        if (parent == null) {
-            return name + "/";
-        } else {
-            String suffix = "";
-            if (isFolder()) {
-                suffix = "/";
-            }
-            return parent.toString() + name + suffix;
-        }
+        if (parent == null) return "/";
+        if ("/".equals(parent.toString())) return "/" + name;
+        return parent.toString() + "/" + name;
     }
 }

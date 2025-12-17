@@ -33,6 +33,8 @@ public class FolderNode extends FileSystemNode {
      * Only direct children are considered, not deeper descendants.
      */
     public FileSystemNode getChildByName(String childName) {
+        if (childName == null)
+            return null;
         for (FileSystemNode fileSystemNode : children) {
             if (fileSystemNode.getName().equals(childName)) {
                 return fileSystemNode;
@@ -49,7 +51,7 @@ public class FolderNode extends FileSystemNode {
      * Otherwise the new file is added and true is returned.
      */
     public boolean addFile(String fileName, int size) {
-        if (getChildByName(fileName) != null)
+        if (getChildByName(fileName) != null || fileName == null || fileName.trim().isEmpty() || size < 0)
             return false;
         children.add(new FileNode(this, fileName, size));
         return true;
@@ -63,7 +65,7 @@ public class FolderNode extends FileSystemNode {
      * Otherwise the new folder is added and true is returned.
      */
     public boolean addFolder(String folderName) {
-        if (getChildByName(folderName) != null)
+        if (getChildByName(folderName) != null || folderName == null || folderName.trim().isEmpty())
             return false;
         children.add(new FolderNode(folderName, this));
         return true;
@@ -76,14 +78,12 @@ public class FolderNode extends FileSystemNode {
      * toString().
      */
     public boolean containsNameRecursive(String searchName) {
-        if (children.isEmpty())
-            return false;
         for (FileSystemNode child : children) {
-            if (getChildByName(searchName) != null)
+            if (child.getName().equals(searchName))
                 return true;
             if (child.isFolder()) {
-                FolderNode temp = (FolderNode) child;
-                temp.containsNameRecursive(searchName);
+                if (((FolderNode) child).containsNameRecursive(searchName))
+                    return true;
             }
         }
         return false;
@@ -91,24 +91,11 @@ public class FolderNode extends FileSystemNode {
 
     @Override
     public int getHeight() {
-        return helper(this);
-
-    }
-
-    public int helper(FileSystemNode temp) {
-        if (temp.isFolder()) {
-            return 0;
-        }
         int max = 0;
-
-        for (FileSystemNode fileSystemNode : children) {
-            int count = 0;
-            if (fileSystemNode.isFolder()) {
-                count += helper(fileSystemNode);
-            }
-            if (count > max) {
+        for (FileSystemNode child : children) {
+            int count = 1 + child.getHeight();
+            if (count > max)
                 max = count;
-            }
         }
         return max;
     }
@@ -124,7 +111,7 @@ public class FolderNode extends FileSystemNode {
 
     @Override
     public int getTotalNodeCount() {
-        int totalCount = 0;
+        int totalCount = 1; // count this folder
         for (FileSystemNode child : children) {
             totalCount += child.getTotalNodeCount(); // recurse into the folder
         }

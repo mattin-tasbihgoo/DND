@@ -14,6 +14,10 @@ public class FileNode extends FileSystemNode {
         this.size = size;
     }
 
+    public FileNode(String name, FolderNode parent, int size) {
+        this(parent, name, size);
+    }
+
     @Override
     public boolean isFolder() {
         return false;
