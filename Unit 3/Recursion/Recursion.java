@@ -220,59 +220,63 @@ public class Recursion {
 
 	// copied from last year
 
-	/* public static void merge2(int[] arr, int leftIndex, int middleIndex, int rightIndex) {
-		int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
-		int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
-		int i = 0, j = 0, k = leftIndex;
-
-		// Compare and place elements in the correct order
-		while (i < leftArr.length && j < rightArr.length) {
-			if (leftArr[i] <= rightArr[j]) {
-				arr[k] = leftArr[i++];
-			} else {
-				arr[k] = rightArr[j++];
-			}
-			k++;
-		}
-
-		// Copy any remaining elements from left array
-		while (i < leftArr.length) {
-			arr[k++] = leftArr[i++];
-		}
-
-		// Copy any remaining elements from right array
-		while (j < rightArr.length) {
-			arr[k++] = rightArr[j++];
-		}
-	}
-
-	public static void merge(ArrayList<Integer> list, int leftIndex, int middleIndex, int rightIndex) {
-		ArrayList<Integer> leftList = new ArrayList<>(list.subList(leftIndex,
-				middleIndex + 1));
-		ArrayList<Integer> rightList = new ArrayList<>(list.subList(middleIndex + 1,
-				rightIndex + 1));
-		int i = 0, j = 0, k = leftIndex;
-
-		// Compare and place elements in the correct order
-		while (i < leftList.size() && j < rightList.size()) {
-			if (leftList.get(i) <= rightList.get(j)) {
-				list.set(k, leftList.get(i++));
-			} else {
-				list.set(k, rightList.get(j++));
-			}
-			k++;
-		}
-
-		// Copy any remaining elements from left list
-		while (i < leftList.size()) {
-			list.set(k++, leftList.get(i++));
-		}
-
-		// Copy any remaining elements from right list
-		while (j < rightList.size()) {
-			list.set(k++, rightList.get(j++));
-		}
-	} */
+	/*
+	 * public static void merge2(int[] arr, int leftIndex, int middleIndex, int
+	 * rightIndex) {
+	 * int[] leftArr = Arrays.copyOfRange(arr, leftIndex, middleIndex + 1);
+	 * int[] rightArr = Arrays.copyOfRange(arr, middleIndex + 1, rightIndex + 1);
+	 * int i = 0, j = 0, k = leftIndex;
+	 * 
+	 * // Compare and place elements in the correct order
+	 * while (i < leftArr.length && j < rightArr.length) {
+	 * if (leftArr[i] <= rightArr[j]) {
+	 * arr[k] = leftArr[i++];
+	 * } else {
+	 * arr[k] = rightArr[j++];
+	 * }
+	 * k++;
+	 * }
+	 * 
+	 * // Copy any remaining elements from left array
+	 * while (i < leftArr.length) {
+	 * arr[k++] = leftArr[i++];
+	 * }
+	 * 
+	 * // Copy any remaining elements from right array
+	 * while (j < rightArr.length) {
+	 * arr[k++] = rightArr[j++];
+	 * }
+	 * }
+	 * 
+	 * public static void merge(ArrayList<Integer> list, int leftIndex, int
+	 * middleIndex, int rightIndex) {
+	 * ArrayList<Integer> leftList = new ArrayList<>(list.subList(leftIndex,
+	 * middleIndex + 1));
+	 * ArrayList<Integer> rightList = new ArrayList<>(list.subList(middleIndex + 1,
+	 * rightIndex + 1));
+	 * int i = 0, j = 0, k = leftIndex;
+	 * 
+	 * // Compare and place elements in the correct order
+	 * while (i < leftList.size() && j < rightList.size()) {
+	 * if (leftList.get(i) <= rightList.get(j)) {
+	 * list.set(k, leftList.get(i++));
+	 * } else {
+	 * list.set(k, rightList.get(j++));
+	 * }
+	 * k++;
+	 * }
+	 * 
+	 * // Copy any remaining elements from left list
+	 * while (i < leftList.size()) {
+	 * list.set(k++, leftList.get(i++));
+	 * }
+	 * 
+	 * // Copy any remaining elements from right list
+	 * while (j < rightList.size()) {
+	 * list.set(k++, rightList.get(j++));
+	 * }
+	 * }
+	 */
 
 	// Performs a quickSort on the given array of ints
 	// Use the middle element (index n/2) as the pivot
@@ -283,6 +287,7 @@ public class Recursion {
 		}
 		quickSortHelper(ints, 0, ints.length - 1);
 	}
+
 	private static void quickSortHelper(int[] ints, int left, int right) {
 		if (left >= right) {
 			return;
@@ -310,6 +315,7 @@ public class Recursion {
 		quickSortHelper(ints, left, temp - 1);
 		quickSortHelper(ints, temp + 1, right);
 	}
+
 	private static void swap(int[] ints, int i, int j) {
 		int temp = ints[i];
 		ints[i] = ints[j];
@@ -362,7 +368,8 @@ public class Recursion {
 	// for a total of 20 points, so it would return 20.
 
 	public static int scavHunt(int[] times, int[] points) {
-		if (times == null || points == null || times.length == 0 || points.length == 0 || times.length != points.length) {
+		if (times == null || points == null || times.length == 0 || points.length == 0
+				|| times.length != points.length) {
 			return 0;
 		}
 		int temp = findIndex(0, times);
@@ -373,6 +380,7 @@ public class Recursion {
 		return scavHuntHelper(times, points, temp);
 
 	}
+
 	public static int scavHuntHelper(int[] times, int[] points, int temp) {
 		if (temp >= times.length) {
 			return 0;
