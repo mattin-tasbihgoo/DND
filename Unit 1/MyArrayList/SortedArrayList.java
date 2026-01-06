@@ -51,7 +51,7 @@ public class SortedArrayList<E extends Comparable<E>> extends MyArrayList<E> {
 	public int binarySearchRecursiveHelper(E obj, int low, int high) {
 		if (low > high) return -(low + 1);
 
-		int mid = low (high - low) / 2;
+		int mid = low + (high - low) / 2;
 
 		int compare = this.get(mid).compareTo(obj);
 		if (compare == 0) return mid;
