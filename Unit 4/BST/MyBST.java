@@ -1,8 +1,8 @@
 // Implements a BST with BinaryNode nodes
 
 public class MyBST<E extends Comparable<E>> {
-	
-	private BinaryNode<E> root;  // holds the root of this BST
+
+	private BinaryNode<E> root; // holds the root of this BST
 
 	// Constructor: creates an empty BST.
 	public MyBST() {
@@ -12,13 +12,30 @@ public class MyBST<E extends Comparable<E>> {
 	public BinaryNode<E> getRoot() {
 		return root;
 	}
-	
+
 	public int getHeight() {
 		return root.getHeight();
 	}
 
 	// Returns true if this BST contains value; otherwise returns false.
 	public boolean contains(E value) {
+		return containsHelper(value, root);
+	}
+
+	public boolean containsHelper(E value, BinaryNode<E> temp) {
+		if (temp.hasLeft()) {
+			if (value.equals(temp.getLeft()))
+				return true;
+			containsHelper(value, temp.getLeft());
+		}
+
+		if (value.equals(temp.getValue()))
+			return true;
+
+		if (temp.hasRight()) {
+			if (value.equals(temp.getRight()))
+				return containsHelper(value, temp.getLeft());
+		}
 		return false;
 	}
 
@@ -28,29 +45,58 @@ public class MyBST<E extends Comparable<E>> {
 		return false;
 	}
 
-	// Removes value from this BST.  Returns true if value has been
+	// Removes value from this BST. Returns true if value has been
 	// found and removed; otherwise returns false.
 	// If removing a node with two children: replace it with the
-	//  largest node in the right subtree
+	// largest node in the right subtree
 	public boolean remove(E value) {
 		return false;
 	}
-	
+
 	// Returns the minimum in the tree
 	public E min() {
-		return null;
+		return minHelper(root);
 	}
-	
+
+	public E minHelper(BinaryNode<E> temp) {
+		if (temp.hasLeft())
+			minHelper(temp.getLeft());
+		return temp.getValue();
+	}
+
 	// Returns the maximum in the tree.
 	public E max() {
-		return null;
+		return maxHelper(root);
 	}
 
-	// Returns a bracket-surrounded, comma separated list of the contents of the nodes, in order
+	public E maxHelper(BinaryNode<E> temp) {
+		if (temp.hasRight()) {
+			minHelper(temp.getRight());
+		}
+		return temp.getValue();
+	}
+
+	// Returns a bracket-surrounded, comma separated list of the contents of the
+	// nodes, in order
 	// e.g. [Apple, Cranberry, Durian, Mango]
 	public String toString() {
-		return "";
+		StringBuilder string = new StringBuilder();
+		string.append("[");
+		stringHelper(string, root);
+		string.append("]");
+		return string.toString();
 	}
 
+	public StringBuilder stringHelper(StringBuilder sb, BinaryNode<E> temp) {
+		if (temp.hasLeft()) {
+			stringHelper(sb, temp.getLeft());
+		}
 
+		sb.append(temp.getValue() + ", ");
+
+		if (temp.hasRight()) {
+			stringHelper(sb, temp.getRight());
+		}
+		return sb;
+	}
 }
