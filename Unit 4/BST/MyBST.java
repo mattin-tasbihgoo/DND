@@ -42,6 +42,30 @@ public class MyBST<E extends Comparable<E>> {
 	// Adds value to this BST, unless this tree already holds value.
 	// Returns true if value has been added; otherwise returns false.
 	public boolean add(E value) {
+		BinaryNode<E> temp = root;
+		BinaryNode<E> temp2 = new BinaryNode<E>(value);
+		if (root == null) {
+			root = temp2;
+			return true;
+		}
+		while (value.compareTo((E) temp.getValue()) != 0) {
+			if (value.compareTo((E) temp.getValue()) < 0) {
+				if (!temp.hasLeft()) {
+					temp.setLeft(temp2);
+					return true;
+				} else {
+					temp = temp.getLeft();
+				}
+			}
+			if (value.compareTo((E) temp.getValue()) > 0) {
+				if (!temp.hasRight()) {
+					temp.setRight(temp2);
+					return true;
+				} else {
+					temp = temp.getRight();
+				}
+			}
+		}
 		return false;
 	}
 
@@ -83,6 +107,7 @@ public class MyBST<E extends Comparable<E>> {
 		StringBuilder string = new StringBuilder();
 		string.append("[");
 		stringHelper(string, root);
+		string.delete(string.length() - 2, string.length());
 		string.append("]");
 		return string.toString();
 	}
