@@ -40,25 +40,28 @@ public class BinaryNode<E extends Comparable<E>> {
 
 	public void setLeft(BinaryNode<E> left) {
 		this.left = left;
-		if (left != null) {
+		if (left != null)
 			left.setParent(this);
-		}
+
 	}
 
 	public void setRight(BinaryNode<E> right) {
 		this.right = right;
-		if (right != null) {
+		if (right != null)
 			right.setParent(this);
-		}
+
+		updateHeight();
 	}
 
 	public void updateHeight() {
+		int counter = 0;
 		BinaryNode<E> temp = this;
 		this.height = 0;
 		while (temp.getParent() != null) {
-			this.height = height++;
+			counter++;
+			temp = temp.getParent();
 		}
-		this.setHeight(height);
+		this.setHeight(counter);
 	}
 
 	public void setParent(BinaryNode<E> parent) {

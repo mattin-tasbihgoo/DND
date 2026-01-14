@@ -21,41 +21,14 @@ public class MyBST<E extends Comparable<E>> {
 	}
 
 	public boolean containsHelper(E value, BinaryNode<E> temp) {
-		if (temp.hasLeft()) {
-			if (value.equals(temp.getLeft()))
-				return true;
-			containsHelper(value, temp.getLeft());
-		}
-
-		if (value.equals(temp.getValue()))
+		if (temp == null || value == null)
+			return false;
+		int cmpr = value.compareTo(temp.getValue());
+		if (cmpr == 0)
 			return true;
-
-		if (temp.hasRight()) {
-			if (value.equals(temp.getRight()))
-				return containsHelper(value, temp.getLeft());
-		}
-		return false;
-	}
-
-	public boolean find(E value) {
-		return containsHelper(value, root);
-	}
-
-	public E findHelper(E value, BinaryNode<E> temp) {
-		if (temp.hasLeft()) {
-			if (value.equals(temp.getLeft()))
-				return (E) temp.getLeft();
-			findHelper(value, temp.getLeft());
-		}
-
-		if (value.equals(temp.getValue()))
-			return temp.getValue();
-
-		if (temp.hasRight()) {
-			if (value.equals(temp.getRight()))
-				return findHelper(value, temp.getLeft());
-		}
-		return null;
+		if (cmpr < 0)
+			return containsHelper(value, temp.getLeft());
+		return containsHelper(value, temp.getRight());
 	}
 
 	// Adds value to this BST, unless this tree already holds value.
@@ -97,9 +70,41 @@ public class MyBST<E extends Comparable<E>> {
 	}
 
 	private boolean deport(E value) {
-		if (!contains(value))
+		if (value == null || !contains(value))
 			return false;
+
+		BinaryNode<E> temp = root;
+		while (temp != null) {
+			int cmpr = value.compareTo(temp.getValue());
+			if (cmpr == 0)
+				break;
+			temp = (cmpr < 0) ? temp.getLeft() : temp.getRight();
+		}
+
+		// Case: 2 children
+		if (temp.hasLeft() && temp.hasRight()) {
+			BinaryNode<E> replace = temp.getRight();
+
+			while (replace.hasLeft())
+				replace = replace.getLeft();
+			temp.setValue(replace.getValue());
+			temp = replace;
+		}
+
+		// Case: 1 or 0 children
+
 		return false;
+	}
+
+	public E find(E value, BinaryNode<E> temp) {
+		if (temp == null || value == null)
+			return null;
+		int cmpr = value.compareTo(temp.getValue());
+		if (cmpr == 0)
+			return temp.getValue();
+		if (cmpr < 0)
+			return find(value, temp.getLeft());
+		return find(value, temp.getRight());
 	}
 
 	// Returns the minimum in the tree
@@ -136,7 +141,6 @@ public class MyBST<E extends Comparable<E>> {
 	public String toString() {
 		if (root == null)
 			return "[]";
-
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		stringHelper(sb, root);
