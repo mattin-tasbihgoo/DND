@@ -1,4 +1,3 @@
-
 public class BinaryNode<E extends Comparable<E>> {
 
 	private E value;
@@ -41,12 +40,25 @@ public class BinaryNode<E extends Comparable<E>> {
 
 	public void setLeft(BinaryNode<E> left) {
 		this.left = left;
-		this.height = height++; // YOU CODE: Update height
+		if (left != null) {
+			left.setParent(this);
+		}
 	}
 
 	public void setRight(BinaryNode<E> right) {
 		this.right = right;
-		this.height = height++; // YOU CODE: Update height
+		if (right != null) {
+			right.setParent(this);
+		}
+	}
+
+	public void updateHeight() {
+		BinaryNode<E> temp = this;
+		this.height = 0;
+		while (temp.getParent() != null) {
+			this.height = height++;
+		}
+		this.setHeight(height);
 	}
 
 	public void setParent(BinaryNode<E> parent) {
@@ -69,6 +81,7 @@ public class BinaryNode<E extends Comparable<E>> {
 		return !hasLeft() && !hasRight();
 	}
 
+	@Override
 	public String toString() {
 		return value.toString();
 

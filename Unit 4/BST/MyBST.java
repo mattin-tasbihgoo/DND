@@ -1,5 +1,3 @@
-// Implements a BST with BinaryNode nodes
-
 public class MyBST<E extends Comparable<E>> {
 
 	private BinaryNode<E> root; // holds the root of this BST
@@ -39,11 +37,32 @@ public class MyBST<E extends Comparable<E>> {
 		return false;
 	}
 
+	public boolean find(E value) {
+		return containsHelper(value, root);
+	}
+
+	public E findHelper(E value, BinaryNode<E> temp) {
+		if (temp.hasLeft()) {
+			if (value.equals(temp.getLeft()))
+				return (E) temp.getLeft();
+			findHelper(value, temp.getLeft());
+		}
+
+		if (value.equals(temp.getValue()))
+			return temp.getValue();
+
+		if (temp.hasRight()) {
+			if (value.equals(temp.getRight()))
+				return findHelper(value, temp.getLeft());
+		}
+		return null;
+	}
+
 	// Adds value to this BST, unless this tree already holds value.
 	// Returns true if value has been added; otherwise returns false.
 	public boolean add(E value) {
 		BinaryNode<E> temp = root;
-		BinaryNode<E> temp2 = new BinaryNode<E>(value);
+		BinaryNode<E> temp2 = new BinaryNode<>(value);
 		if (root == null) {
 			root = temp2;
 			return true;
@@ -74,11 +93,19 @@ public class MyBST<E extends Comparable<E>> {
 	// If removing a node with two children: replace it with the
 	// largest node in the right subtree
 	public boolean remove(E value) {
+		return deport(value);
+	}
+
+	private boolean deport(E value) {
+		if (!contains(value))
+			return false;
 		return false;
 	}
 
 	// Returns the minimum in the tree
 	public E min() {
+		if (root == null)
+			return null;
 		return minHelper(root);
 	}
 
@@ -90,6 +117,8 @@ public class MyBST<E extends Comparable<E>> {
 
 	// Returns the maximum in the tree.
 	public E max() {
+		if (root == null)
+			return null;
 		return maxHelper(root);
 	}
 
@@ -103,25 +132,25 @@ public class MyBST<E extends Comparable<E>> {
 	// Returns a bracket-surrounded, comma separated list of the contents of the
 	// nodes, in order
 	// e.g. [Apple, Cranberry, Durian, Mango]
+	@Override
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append("[");
-		stringHelper(string, root);
-		string.delete(string.length() - 2, string.length());
-		string.append("]");
-		return string.toString();
+		if (root == null)
+			return "[]";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		stringHelper(sb, root);
+		sb.delete(sb.length() - 2, sb.length());
+		sb.append("]");
+		return sb.toString();
 	}
 
 	public StringBuilder stringHelper(StringBuilder sb, BinaryNode<E> temp) {
-		if (temp.hasLeft()) {
-			stringHelper(sb, temp.getLeft());
-		}
-
-		sb.append(temp.getValue() + ", ");
-
-		if (temp.hasRight()) {
-			stringHelper(sb, temp.getRight());
-		}
+		if (temp == null)
+			return sb;
+		stringHelper(sb, temp.getLeft());
+		sb.append(temp.getValue()).append(", ");
+		stringHelper(sb, temp.getRight());
 		return sb;
 	}
 }
