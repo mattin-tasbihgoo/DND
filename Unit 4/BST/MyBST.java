@@ -21,21 +21,18 @@ public class MyBST<E extends Comparable<E>> {
 	}
 
 	public boolean containsHelper(E value, BinaryNode<E> temp) {
-		if (temp == null || value == null)
-			return false;
+		if (temp == null || value == null) return false;
 		int cmpr = value.compareTo(temp.getValue());
-		if (cmpr == 0)
-			return true;
-		if (cmpr < 0)
-			return containsHelper(value, temp.getLeft());
+		if (cmpr == 0) return true;
+		if (cmpr < 0) return containsHelper(value, temp.getLeft());
 		return containsHelper(value, temp.getRight());
 	}
 
 	// Adds value to this BST, unless this tree already holds value.
 	// Returns true if value has been added; otherwise returns false.
 	public boolean add(E value) {
-		BinaryNode<E> temp = root;
-		BinaryNode<E> temp2 = new BinaryNode<>(value);
+		if (value == null) return false;
+		BinaryNode<E> temp = root, temp2 = new BinaryNode<>(value);
 		if (root == null) {
 			root = temp2;
 			return true;
@@ -64,74 +61,74 @@ public class MyBST<E extends Comparable<E>> {
 	// Removes value from this BST. Returns true if value has been
 	// found and removed; otherwise returns false.
 	// If removing a node with two children: replace it with the
-	// largest node in the right subtree
+	// smallest node in the right subtree
 	public boolean remove(E value) {
 		return deport(value);
 	}
 
-	private boolean deport(E value) {
-		if (value == null || !contains(value))
-			return false;
+/* 	public boolean remove(E value) {
+		if (value == null) return false; BinaryNode<E> temp = find(value, root); if (temp == null) return false; if (temp.hasLeft() && temp.hasRight()){BinaryNode<E> temp2 = temp.getRight(); while (temp2.hasLeft()) temp2 = temp2.getLeft(); temp.setValue(temp2.getValue()); temp = temp2;} BinaryNode<E> child = temp.hasLeft() ? temp.getLeft() : temp.getRight(); BinaryNode<E> parent = temp.getParent(); if (parent == null) root = child; if (child != null) child.setParent(null); else if (parent.getLeft() == temp) parent.setLeft(child); else parent.setRight(child); return true;
+	} */
+	// ONE LINE REMOVE LMFAOOOOOOO
 
-		BinaryNode<E> temp = root;
-		while (temp != null) {
-			int cmpr = value.compareTo(temp.getValue());
-			if (cmpr == 0)
-				break;
-			temp = (cmpr < 0) ? temp.getLeft() : temp.getRight();
-		}
+	private boolean deport(E value) {
+		// If nothing remove nothing
+		if (value == null) return false;
+
+		// Find the node to remove (my dumbahh was confused why i had to make a new find algorithm in deport and realized i was returning the wrong thing (value not node))
+		BinaryNode<E> temp = find(value, root);
+		if (temp == null) return false;
 
 		// Case: 2 children
 		if (temp.hasLeft() && temp.hasRight()) {
-			BinaryNode<E> replace = temp.getRight();
-
-			while (replace.hasLeft())
-				replace = replace.getLeft();
-			temp.setValue(replace.getValue());
-			temp = replace;
+			BinaryNode<E> temp2 = temp.getRight();
+			while (temp2.hasLeft()) temp2 = temp2.getLeft();
+			temp.setValue(temp2.getValue());
+			temp = temp2;
 		}
 
-		// Case: 1 or 0 children
+		// Case: 1 or 0 child
+		BinaryNode<E> child = temp.hasLeft() ? temp.getLeft() : temp.getRight(), parent = temp.getParent();
 
-		return false;
+		// Re-link parent and child
+		if (parent == null) {
+			root = child;
+			if (child != null) child.setParent(null);
+		} else if (parent.getLeft() == temp) {
+			parent.setLeft(child);
+		} else {
+			parent.setRight(child);
+		}
+
+		return true;
 	}
 
-	public E find(E value, BinaryNode<E> temp) {
-		if (temp == null || value == null)
-			return null;
+	public BinaryNode<E> find(E value, BinaryNode<E> temp) {
+		if (temp == null || value == null) return null;
 		int cmpr = value.compareTo(temp.getValue());
-		if (cmpr == 0)
-			return temp.getValue();
-		if (cmpr < 0)
-			return find(value, temp.getLeft());
+		if (cmpr == 0) return temp;
+		if (cmpr < 0) return find(value, temp.getLeft());
 		return find(value, temp.getRight());
 	}
 
 	// Returns the minimum in the tree
 	public E min() {
-		if (root == null)
-			return null;
+		if (root == null) return null;
 		return minHelper(root);
 	}
 
 	public E minHelper(BinaryNode<E> temp) {
-		if (temp.hasLeft())
-			minHelper(temp.getLeft());
-		return temp.getValue();
+		return temp.hasLeft() ? minHelper(temp.getLeft()) : temp.getValue();
 	}
 
 	// Returns the maximum in the tree.
 	public E max() {
-		if (root == null)
-			return null;
+		if (root == null) return null;
 		return maxHelper(root);
 	}
 
 	public E maxHelper(BinaryNode<E> temp) {
-		if (temp.hasRight()) {
-			minHelper(temp.getRight());
-		}
-		return temp.getValue();
+		return temp.hasRight() ? maxHelper(temp.getRight()) : temp.getValue();
 	}
 
 	// Returns a bracket-surrounded, comma separated list of the contents of the
@@ -139,8 +136,7 @@ public class MyBST<E extends Comparable<E>> {
 	// e.g. [Apple, Cranberry, Durian, Mango]
 	@Override
 	public String toString() {
-		if (root == null)
-			return "[]";
+		if (root == null) return "[]";
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		stringHelper(sb, root);
@@ -150,8 +146,7 @@ public class MyBST<E extends Comparable<E>> {
 	}
 
 	public StringBuilder stringHelper(StringBuilder sb, BinaryNode<E> temp) {
-		if (temp == null)
-			return sb;
+		if (temp == null) return sb;
 		stringHelper(sb, temp.getLeft());
 		sb.append(temp.getValue()).append(", ");
 		stringHelper(sb, temp.getRight());
