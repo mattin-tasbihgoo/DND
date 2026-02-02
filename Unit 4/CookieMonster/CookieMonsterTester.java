@@ -1,11 +1,4 @@
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Stack;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class CookieMonsterTester {
 
@@ -34,13 +27,11 @@ public class CookieMonsterTester {
 		for (String fileName : fileNames) {
 			CookieMonster monster = new CookieMonster(fileName);
 
-			// long start = System.currentTimeMillis();
-			// int optrecursion = monster.recursiveCookies();
+			long start = System.currentTimeMillis();
+			int optrecursion = monster.recursiveCookies();
 			long end1 = System.currentTimeMillis();
-			// System.out.println("Solved using recursion");
-			// System.out.println("Optimal path has " + optrecursion + " cookies, using
-			// recursion to search. TIME: "
-			// + (end1 - start) + " milliseconds");
+			System.out.println("Solved using recursion");
+			System.out.println("Optimal path has " + optrecursion + " cookies, using recursion to search. TIME: " + (end1 - start) + " milliseconds");
 			int optqueue = monster.queueCookies();
 			long end2 = System.currentTimeMillis();
 			System.out.println("Solved using queue");

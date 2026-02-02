@@ -81,28 +81,22 @@ public class CookieMonster {
 	public int queueCookies() {
 		ArrayDeque<OrphanScout> orph = new ArrayDeque<>();
 		int max = 0;
-		orph.add(new OrphanScout(0, 0, 0));
-		boolean cease = false;
-		while (!cease) {
-			int size = orph.size();
-			cease = true;
-			for (int i = 0; i < size; i++) {
-				OrphanScout tempOrph = orph.peek();
-				int right = tempOrph.getEndingRow();
-				int down = tempOrph.getEndingCol();
-				int cookies = tempOrph.getCookiesDiscovered();
+		orph.add(new OrphanScout(0, 0, cookieGrid[0][0]));
 
-				if (validPoint(right + 1, down)) {
-					orph.add(new OrphanScout(right + 1, down, cookies + cookieGrid[right + 1][down]));
-					max = Math.max(max, cookies);
-					cease = false;
-				}
-				if (validPoint(right, down + 1)) {
-					orph.add(new OrphanScout(right, down + 1, cookies + cookieGrid[right][down + 1]));
-					max = Math.max(max, cookies);
-					cease = false;
-				}
+		while (!orph.isEmpty()) {
+			OrphanScout tempOrph = orph.poll();
+			int right = tempOrph.getEndingRow(), down = tempOrph.getEndingCol(),
+					cookies = tempOrph.getCookiesDiscovered();
+
+			max = Math.max(max, cookies);
+
+			if (validPoint(right + 1, down)) {
+				orph.add(new OrphanScout(right + 1, down, cookies + cookieGrid[right + 1][down]));
 			}
+			if (validPoint(right, down + 1)) {
+				orph.add(new OrphanScout(right, down + 1, cookies + cookieGrid[right][down + 1]));
+			}
+
 		}
 		return (max);
 	}
