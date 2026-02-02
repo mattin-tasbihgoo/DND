@@ -14,15 +14,15 @@ public class CookieMonsterTester {
 	public static void main(String[] args) {
 		String[] fileNames = { "cookies0.txt", "cookies1.txt", "cookies2.txt" };
 
-		Scanner kboard = new Scanner(System.in);
-		System.out.print("Enter the cookies file name or press ENTER for 3 default test cases: ");
-		String input = kboard.nextLine();
-		if (!input.equals("")) {
-			System.out.print("FileName entered: " + input + ".  ");
-			fileNames = new String[1];
-			fileNames[0] = input.trim();
+		try (Scanner kboard = new Scanner(System.in)) {
+			System.out.print("Enter the cookies file name or press ENTER for 3 default test cases: ");
+			String input = kboard.nextLine();
+			if (!input.equals("")) {
+				System.out.print("FileName entered: " + input + ".  ");
+				fileNames = new String[1];
+				fileNames[0] = input.trim();
+			}
 		}
-		kboard.close();
 
 		for (String fileName : fileNames) {
 			CookieMonster monster = new CookieMonster(fileName);
@@ -31,19 +31,20 @@ public class CookieMonsterTester {
 			int optrecursion = monster.recursiveCookies();
 			long end1 = System.currentTimeMillis();
 			System.out.println("Solved using recursion");
-			System.out.println("Optimal path has " + optrecursion + " cookies, using recursion to search. TIME: " + (end1 - start) + " milliseconds");
+			System.out.println("Optimal path has " + optrecursion + " cookies, using recursion to search. TIME: "
+					+ (end1 - start) + " milliseconds");
 			int optqueue = monster.queueCookies();
 			long end2 = System.currentTimeMillis();
 			System.out.println("Solved using queue");
 			System.out.println("Optimal path has " + optqueue +
 					" cookies, using a queue to search.  TIME: " + (end2 - end1) +
 					" milliseconds");
-			// int optstack = monster.stackCookies();
-			// long end3 = System.currentTimeMillis();
-			// System.out.println("Solved using stack");
-			// System.out.println("Optimal path has " + optstack +
-			// " cookies, using a stack to search. TIME: " + (end3 - end2) +
-			// " milliseconds");
+			int optstack = monster.stackCookies();
+			long end3 = System.currentTimeMillis();
+			System.out.println("Solved using stack");
+			System.out.println("Optimal path has " + optstack +
+			" cookies, using a stack to search. TIME: " + (end3 - end2) +
+			" milliseconds");
 
 		}
 	}

@@ -110,8 +110,26 @@ public class CookieMonster {
 	 * down
 	 */
 	public int stackCookies() {
-		// CODE THIS
-		return 0;
+		Stack<OrphanScout> orph = new Stack<>();
+		int max = 0;
+		orph.add(new OrphanScout(0, 0, cookieGrid[0][0]));
+
+		while (!orph.isEmpty()) {
+			OrphanScout tempOrph = orph.pop();
+			int right = tempOrph.getEndingRow(), down = tempOrph.getEndingCol(),
+					cookies = tempOrph.getCookiesDiscovered();
+
+			max = Math.max(max, cookies);
+
+			if (validPoint(right + 1, down)) {
+				orph.add(new OrphanScout(right + 1, down, cookies + cookieGrid[right + 1][down]));
+			}
+			if (validPoint(right, down + 1)) {
+				orph.add(new OrphanScout(right, down + 1, cookies + cookieGrid[right][down + 1]));
+			}
+
+		}
+		return (max);
 	}
 
 }
