@@ -110,7 +110,7 @@ public class CookieMonster {
 	 * down
 	 */
 	public int stackCookies() {
-		Stack<OrphanScout> orph = new Stack<>();
+		ArrayDeque<OrphanScout> orph = new ArrayDeque<>();
 		int max = 0;
 		orph.push(new OrphanScout(0, 0, cookieGrid[0][0]));
 
