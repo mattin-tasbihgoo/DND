@@ -27,24 +27,27 @@ public class CookieMonsterTester {
 		for (String fileName : fileNames) {
 			CookieMonster monster = new CookieMonster(fileName);
 
-			long start = System.currentTimeMillis();
-			int optrecursion = monster.recursiveCookies();
+			// long start = System.currentTimeMillis();
+			// int optrecursion = monster.recursiveCookies();
 			long end1 = System.currentTimeMillis();
-			System.out.println("Solved using recursion");
-			System.out.println("Optimal path has " + optrecursion + " cookies, using recursion to search. TIME: "
-					+ (end1 - start) + " milliseconds");
+			// System.out.println("Solved using recursion");
+			// System.out.println("Optimal path has " + optrecursion + " cookies, using
+			// recursion to search. TIME: "
+			// + (end1 - start) + " milliseconds");
 			int optqueue = monster.queueCookies();
 			long end2 = System.currentTimeMillis();
 			System.out.println("Solved using queue");
 			System.out.println("Optimal path has " + optqueue +
 					" cookies, using a queue to search.  TIME: " + (end2 - end1) +
 					" milliseconds");
+			System.out.println();
 			int optstack = monster.stackCookies();
 			long end3 = System.currentTimeMillis();
 			System.out.println("Solved using stack");
 			System.out.println("Optimal path has " + optstack +
-			" cookies, using a stack to search. TIME: " + (end3 - end2) +
-			" milliseconds");
+					" cookies, using a stack to search. TIME: " + (end3 - end2) +
+					" milliseconds");
+			System.out.println();
 
 		}
 	}

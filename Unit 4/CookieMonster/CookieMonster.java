@@ -112,7 +112,7 @@ public class CookieMonster {
 	public int stackCookies() {
 		Stack<OrphanScout> orph = new Stack<>();
 		int max = 0;
-		orph.add(new OrphanScout(0, 0, cookieGrid[0][0]));
+		orph.push(new OrphanScout(0, 0, cookieGrid[0][0]));
 
 		while (!orph.isEmpty()) {
 			OrphanScout tempOrph = orph.pop();
