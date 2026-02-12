@@ -60,8 +60,6 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 
 	// Returns the index of the *smaller child* of index i
 	private int smallerChild(int i) {
-		// int left = i * 2 + 1;
-		// int right = i * 2 + 2;
 		return (heap[i * 2 + 1].compareTo(heap[i * 2 + 2]) <= 0) ? i * 2 + 1 : i * 2 + 2;
 	}
 
@@ -74,8 +72,8 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 
 	// Bubbles the element at index i upwards until the heap properties hold again.
 	private void bubbleUp(int i) {
-		for (int j = parent(i); heap[i].compareTo(heap[j]) < 0; i = j, j = parent(i), swap(i, j))
-			;
+		for (int j = i; heap[i].compareTo(heap[j]) < 0; j = parent(i))
+			swap(j, parent(j));
 		// does swap need to be inside the for loop?
 	}
 	// for (place; bubbleup; up parent);
@@ -90,26 +88,35 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 
 	@Override
 	public void add(E obj) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'add'");
+		if (obj == null)
+			throw new NullPointerException();
+		if (heap.length == objectCount)
+			increaseCapacity();
+
+		heap[objectCount] = obj;
+		objectCount++;
+		bubbleUp(objectCount);
 	}
 
 	@Override
 	public E removeMin() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'removeMin'");
+		E temp = heap[0];
+		heap[0] = heap[objectCount];
+		heap[objectCount] = null;
+
+		objectCount--;
+		bubbleDown(0);
+		return temp;
 	}
 
 	@Override
 	public E peek() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'peek'");
+		return heap[0];
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+		return objectCount == 0;
 	}
 
 }
