@@ -50,6 +50,7 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 			newHeap[counter] = e;
 			counter++;
 		}
+		heap = newHeap;
 	}
 
 	// Returns the index of the "parent" of index i
@@ -59,7 +60,9 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 
 	// Returns the index of the *smaller child* of index i
 	private int smallerChild(int i) {
-		return (1 + 2) * 2 - 1;
+		// int left = i * 2 + 1;
+		// int right = i * 2 + 2;
+		return (heap[i * 2 + 1].compareTo(heap[i * 2 + 2]) <= 0) ? i * 2 + 1 : i * 2 + 2;
 	}
 
 	// Swaps the contents of indices i and j
@@ -71,15 +74,18 @@ public class HeapPQ<E extends Comparable<E>> implements MyPriorityQueue<E> {
 
 	// Bubbles the element at index i upwards until the heap properties hold again.
 	private void bubbleUp(int i) {
-		for (int j = 0; j < heap.length; swap(i, j))
+		for (int j = parent(i); heap[i].compareTo(heap[j]) < 0; i = j, j = parent(i), swap(i, j))
 			;
-		// for (place; bubbleup; up parent);
+		// does swap need to be inside the for loop?
 	}
+	// for (place; bubbleup; up parent);
 
 	// Bubbles the element at index i downwards until the heap properties hold
 	// again.
 	private void bubbleDown(int i) {
-
+		for (int j = smallerChild(i); j != -1 && heap[i].compareTo(heap[j]) > 0; i = j, j = smallerChild(i), swap(i, j))
+			;
+		// does swap need to be inside the for loop?
 	}
 
 	@Override
