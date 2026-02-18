@@ -11,5 +11,16 @@ public class PQTester {
         heap.add(1);
         heap.add(10);
         System.out.println(heap.toString());
+        MyPQ<Integer> heap2 = new MyPQ<>();
+        heap2.add(1);
+        heap2.removeMin();
+        heap2.add(2);
+        heap2.add(3);
+        heap2.add(4);
+        heap2.add(8);
+        heap2.add(7);
+        heap2.add(1);
+        heap2.add(10);
+        System.out.println(heap2.toString());
     }
 }
