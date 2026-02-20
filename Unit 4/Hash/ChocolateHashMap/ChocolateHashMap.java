@@ -29,7 +29,7 @@ public class ChocolateHashMap<K, V> {
 
     private static void fillArrayWithSentinels(BatchNode[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = new BatchNode();
+            arr[i] = new BatchNode<>();
         }
     }
 
@@ -79,8 +79,22 @@ public class ChocolateHashMap<K, V> {
     // Use the .equals method to check equality.
     public boolean containsValue(V value) {
         for (int i = 0; i < buckets.length; i++) {
-            for (int j = 0; j < buckets.length; j++) {
-                // to do;
+            BatchNode<ChocolateEntry<K, V>> sentinel = buckets[i];
+            BatchNode<ChocolateEntry<K, V>> cur = sentinel.getNext();
+
+            while (!cur.isSentinel()) {
+                ChocolateEntry<K, V> entry = cur.getEntry();
+                V curVal = entry.getValue();
+
+                if (value == null) {
+                    if (curVal == null)
+                        return true;
+                } else {
+                    if (value.equals(curVal))
+                        return true;
+                }
+
+                cur = cur.getNext();
             }
         }
         return false;
