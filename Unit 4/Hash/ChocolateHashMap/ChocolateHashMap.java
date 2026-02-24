@@ -68,9 +68,11 @@ public class ChocolateHashMap<K, V> {
     // Return true if the key exists as a key in the map, otherwise false.
     // Use the .equals method to check equality.
     public boolean containsKey(K key) {
-        for (int i = 0; i < buckets.length; i++) {
-            if (buckets[i] == key)
-                return true;
+        int i = whichBucket(key);
+        BatchNode<ChocolateEntry<K, V>> cur = buckets[i];
+        while (!buckets[i].isSentinel()) {
+            cur = cur.getNext();
+            return buckets[i].getEntry().getKey().equals(key);
         }
         return false;
     }
@@ -107,22 +109,42 @@ public class ChocolateHashMap<K, V> {
     // After adding the pair, check if the load factor is greater than the limit.
     // - If so, you must call rehash with double the current bucket size.
     public boolean put(K key, V value) {
-        // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement put");
+        if (containsKey(key))
+            return false;
+
+        int i = whichBucket(key);
+        buckets[i].insertBefore(new BatchNode<ChocolateEntry<K, V>>(new ChocolateEntry<K, V>(key, value)));
+        objectCount++;
+        if (currentLoadFactor() > loadFactorLimit) {
+            rehash(buckets.length * 2);
+        }
+        return true;
     }
 
     // Returns the value associated with the key in the map.
     // If the key is not in the map, then return null.
     public V get(K key) {
-        // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement get");
+        if (!containsKey(key))
+            return null;
+
+        BatchNode<ChocolateEntry<K, V>> cur = buckets[whichBucket(key)];
+
+        while (!cur.isSentinel()) {
+            ChocolateEntry<K, V> entry = cur.getEntry();
+            V curVal = entry.getValue();
+
+            if (entry.getKey().equals(key))
+                return curVal;
+            cur = cur.getNext();
+        }
+        return null;
     }
 
     // Remove the pair associated with the key.
     // Return true if successful, false if the key did not exist.
     public boolean remove(K key) {
-        // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement remove");
+        // todo
+        return false;
     }
 
     // Rehash the map so that it contains the given number of buckets
