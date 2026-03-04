@@ -61,7 +61,7 @@ public class ChocolateHashMap<K, V> {
 
     // Returns the current load factor (objCount / buckets)
     public double currentLoadFactor() {
-        return objectCount / buckets.length;
+        return (double) objectCount / buckets.length;
     }
 
     // Return true if the key exists as a key in the map, otherwise false.
@@ -111,7 +111,7 @@ public class ChocolateHashMap<K, V> {
         if (containsKey(key))
             return false;
 
-        buckets[whichBucket(key)].insertBefore(new BatchNode<>(new ChocolateEntry<K, V>(key, value)));
+        buckets[whichBucket(key)].insertBefore(new BatchNode<>(new ChocolateEntry<>(key, value)));
         objectCount++;
         if (currentLoadFactor() > loadFactorLimit) {
             rehash(buckets.length * 2);
@@ -165,8 +165,7 @@ public class ChocolateHashMap<K, V> {
         BatchNode<ChocolateEntry<K, V>>[] newBuckets = (BatchNode<ChocolateEntry<K, V>>[]) new BatchNode[newBucketCount];
         fillArrayWithSentinels(newBuckets);
 
-        for (int b = 0; b < buckets.length; b++) {
-            BatchNode<ChocolateEntry<K, V>> oldSentinel = buckets[b];
+        for (BatchNode<ChocolateEntry<K, V>> oldSentinel : buckets) {
             BatchNode<ChocolateEntry<K, V>> cur = oldSentinel.getNext();
 
             while (!cur.isSentinel()) {
@@ -200,7 +199,7 @@ public class ChocolateHashMap<K, V> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("[ " + objectCount + ", " + buckets.length + " |");
+        sb.append("[ ").append(objectCount).append(", ").append(buckets.length).append(" |");
 
         for (int i = 0; i < buckets.length; i++) {
             BatchNode<ChocolateEntry<K, V>> sentinel = buckets[i];
@@ -208,12 +207,12 @@ public class ChocolateHashMap<K, V> {
             if (sentinel.getNext().isSentinel())
                 continue;
 
-            sb.append(" { b" + i + ":");
+            sb.append(" { b").append(i).append(":");
 
             BatchNode<ChocolateEntry<K, V>> cur = sentinel.getNext();
             while (!cur.isSentinel()) {
                 ChocolateEntry<K, V> entry = cur.getEntry();
-                sb.append(" " + String.valueOf(entry.getKey()) + "," + String.valueOf(entry.getValue()));
+                sb.append(" ").append(String.valueOf(entry.getKey())).append(",").append(String.valueOf(entry.getValue()));
                 cur = cur.getNext();
             }
 
