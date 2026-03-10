@@ -1,3 +1,5 @@
+package ChocolateHashMap;
+
 /**
  * ChocolateHashMap<K,V>
  *
@@ -212,7 +214,8 @@ public class ChocolateHashMap<K, V> {
             BatchNode<ChocolateEntry<K, V>> cur = sentinel.getNext();
             while (!cur.isSentinel()) {
                 ChocolateEntry<K, V> entry = cur.getEntry();
-                sb.append(" ").append(String.valueOf(entry.getKey())).append(",").append(String.valueOf(entry.getValue()));
+                sb.append(" ").append(String.valueOf(entry.getKey())).append(",")
+                        .append(String.valueOf(entry.getValue()));
                 cur = cur.getNext();
             }
 

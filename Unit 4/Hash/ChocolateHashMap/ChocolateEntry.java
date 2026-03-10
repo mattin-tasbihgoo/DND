@@ -1,3 +1,5 @@
+package ChocolateHashMap;
+
 /**
  * ChocolateEntry models one row in a chocolate-factory ledger:
  * a key (e.g., SKU, lot code, recipe name) mapped to a value (e.g., batch
