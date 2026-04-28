@@ -1,18 +1,22 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Huffman {
+public class HuffmanCodeGenerator {
     private final HashMap<Character, Integer> freqMap = new HashMap<>();
+    private final HashMap<Character, String> codeMap = new HashMap<>();
     private final HuffmanNode root;
 
-    public Huffman(String fileName) {
-        buildFrequencyDictionary(fileName);
+    public HuffmanCodeGenerator(String frequencyFile) {
+        buildFrequencyDictionary(frequencyFile);
         root = minHeapify();
+        binaryDictionary(root, "");
     }
 
     private void buildFrequencyDictionary(String fileName) {
@@ -30,6 +34,12 @@ public class Huffman {
 
                 }
             }
+
+            if (freqMap.containsKey((char) 26))
+                freqMap.put((char) 26, freqMap.get((char) 26) + 1);
+            else
+                freqMap.put((char) 26, 1);
+            // total didn't forget eof...
         } catch (IOException e) {
             System.err.println("An I/O error occurred: " + e.getMessage());
         }
@@ -50,19 +60,44 @@ public class Huffman {
         return pq.poll();
     }
 
-    private void binaryDictionary(HuffmanNode node, String binCode, HashMap<Character, String> dict) {
-        if (node.isLeaf()) {
-            dict.put(node.ch, binCode);
-            return;
+    public void makeCodeFile(String codeFile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(codeFile))) {
+            for (int i = 0; i < 128; i++) {
+                char c = (char) i;
+                if (codeMap.containsKey(c))
+                    writer.write(codeMap.get(c));
+                else
+                    writer.write("");
+
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("An I/O error occurred: " + e.getMessage());
         }
-        binaryDictionary(node.left, binCode + "0", dict);
-        binaryDictionary(node.right, binCode + "1", dict);
     }
 
-    private HashMap<Character, String> getBinaryDictionary() {
-        HashMap<Character, String> dict = new HashMap<>();
-        binaryDictionary(root, "", dict);
-        return dict;
+    private void binaryDictionary(HuffmanNode node, String binCode) {
+        if (node.isLeaf()) {
+            codeMap.put(node.ch, binCode);
+            return;
+        }
+        binaryDictionary(node.left, binCode + "0");
+        binaryDictionary(node.right, binCode + "1");
+    }
+
+    // assignment requires these two methods
+    public int getFrequency(char c) {
+        if (freqMap.containsKey(c))
+            return freqMap.get(c);
+        else
+            return 0;
+    }
+
+    public String getCode(char c) {
+        if (codeMap.containsKey(c))
+            return codeMap.get(c);
+        else
+            return "";
     }
 
     private void printTree(HuffmanNode node, String binCode) {
@@ -75,17 +110,12 @@ public class Huffman {
     }
 
     public static void main(String[] args) {
-        Huffman huffman = new Huffman("C:\\Users\\Matti\\OneDrive\\Documents\\GitHub\\DND\\Unit 7\\test.txt");
-        // System.out.println("Character frequencies:");
+        HuffmanCodeGenerator huffin = new HuffmanCodeGenerator(
+                "C:\\Users\\Matti\\OneDrive\\Documents\\GitHub\\DND\\Unit 7\\test.txt");
 
-        // for (HashMap.Entry<Character, Integer> entry : huffman.freqMap.entrySet())
-        // System.out.println("'" + entry.getKey() + "': " + entry.getValue());
-
-        // System.out.println("Binary codes:");
-        // for (HashMap.Entry<Character, String> entry :
-        // huffman.getBinaryDictionary().entrySet())
-        // System.out.println("'" + entry.getKey() + "': " + entry.getValue());
         System.out.println("Huffman Tree:");
-        huffman.printTree(huffman.root, "");
+        huffin.printTree(huffin.root, "");
+
+        huffin.makeCodeFile("C:\\Users\\Matti\\OneDrive\\Documents\\GitHub\\DND\\Unit 7\\codes.txt");
     }
 }
