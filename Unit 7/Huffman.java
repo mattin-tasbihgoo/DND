@@ -59,6 +59,7 @@ public class Huffman {
         binaryDictionary(node.right, binCode + "1", dict);
     }
 
+    @SuppressWarnings("unused")
     private HashMap<Character, String> getBinaryDictionary() {
         HashMap<Character, String> dict = new HashMap<>();
         binaryDictionary(root, "", dict);
