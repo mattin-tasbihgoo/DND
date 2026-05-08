@@ -39,7 +39,6 @@ public class HuffmanCodeGenerator {
                 freqMap.put((char) 26, freqMap.get((char) 26) + 1);
             else
                 freqMap.put((char) 26, 1);
-            // total didn't forget eof...
         } catch (IOException e) {
             System.err.println("An I/O error occurred: " + e.getMessage());
         }
@@ -111,11 +110,11 @@ public class HuffmanCodeGenerator {
 
     public static void main(String[] args) {
         HuffmanCodeGenerator huffin = new HuffmanCodeGenerator(
-                "C:\\Users\\Matti\\OneDrive\\Documents\\GitHub\\DND\\Unit 7\\test.txt");
+                "Unit 7/test.txt");
 
         System.out.println("Huffman Tree:");
         huffin.printTree(huffin.root, "");
 
-        huffin.makeCodeFile("C:\\Users\\Matti\\OneDrive\\Documents\\GitHub\\DND\\Unit 7\\codes.txt");
+        huffin.makeCodeFile("Unit 7/codes.txt");
     }
 }

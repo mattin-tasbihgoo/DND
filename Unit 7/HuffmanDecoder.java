@@ -29,6 +29,8 @@ public class HuffmanDecoder {
     }
 
     public void decodeFileFromHuffmanCodes(String encodedFile, String decodedFile) {
+        // if (!encodedFile.endsWith(".huf"))
+        //     throw new IllegalArgumentException("Encoded file must have .huf extension");
         try (BufferedReader reader = new BufferedReader(new FileReader(encodedFile));
                 BufferedWriter writer = new BufferedWriter(new FileWriter(decodedFile))) {
 
@@ -51,8 +53,46 @@ public class HuffmanDecoder {
         }
     }
 
+    // Day 6
+    public void decodeFile(String encodedFile) {
+        if (!encodedFile.endsWith(".huf"))
+            throw new IllegalArgumentException("Encoded file must have .huf extension");
+
+        String decodedFile = encodedFile.substring(0, encodedFile.length() - 4);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(encodedFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(decodedFile))) {
+
+            StringBuilder Buffer = new StringBuilder();
+            boolean done = false;
+            int byteVal;
+
+            while (!done && (byteVal = reader.read()) != -1) {
+                String eightBits = String.format("%8s", Integer.toBinaryString(byteVal)).replace(' ', '0');
+
+                for (int i = 0; i < eightBits.length() && !done; i++) {
+                    Buffer.append(eightBits.charAt(i));
+                    if (isCode(Buffer.toString())) {
+                        char decoded = decodeChar(Buffer.toString());
+                        if (decoded == 26)
+                            done = true;
+                        else
+                            writer.write(decoded);
+                        Buffer.setLength(0);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("An I/O error occurred: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         HuffmanDecoder decoder = new HuffmanDecoder("Unit 7/codes.txt");
-        decoder.decodeFileFromHuffmanCodes("Unit 7/test.txt.huf", "Unit 7/test.txt.decoded");
+        // decoder.decodeFileFromHuffmanCodes("Unit 7/test.txt.huf", "Unit
+        // 7/test.txt.decoded");
+        decoder.decodeFile("Unit 7/test.txt.huf");
+        // this doesn't work
     }
 }
